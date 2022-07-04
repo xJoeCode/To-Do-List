@@ -18,8 +18,15 @@
                 <div class="relative h-full w-full rounded-2xl bg-greenBlueCrayola"></div>
             </div>
             <div id="formContainer" class="z-2 container fixed grid h-full place-items-center overflow-hidden">
-                <div class="h-3/5 w-4/5 rounded-xl bg-cultured shadow-xl lg:w-2/5">
-                    <svg class="absolute cursor-pointer" id="closeButton" xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 0 24 24" width="48">
+                <div class="h-3/5 w-4/5 overflow-auto rounded-xl bg-cultured shadow-xl lg:w-2/5">
+                    <svg
+                        class="absolute cursor-pointer"
+                        id="closeButton"
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="48"
+                        viewBox="0 0 24 24"
+                        width="48"
+                    >
                         <path d="M0 0h24v24H0z" fill="none" />
                         <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
                     </svg>
@@ -27,31 +34,53 @@
                         <ul class="flex h-full w-1/2 flex-col items-end justify-center">
                             <h2 class="mb-4 self-center text-center font-Bree_Serif text-2xl">Add Task</h2>
                             <li class="container m-3 flex items-center justify-end">
-                                <label for="title"> Title:</label>
-                                <input class="mx-2 w-4/5 border-2 focus:outline-none focus:border-mediumTurqoise" type="text" id="title" required />
+                                <label for="title"> Title:*</label>
+                                <input
+                                    class="mx-2 w-4/5 border-2 focus:border-mediumTurqoise focus:outline-none"
+                                    type="text"
+                                    id="title"
+                                    required
+                                />
                             </li>
                             <li class="container m-3 flex items-center justify-end">
-                                <label for="date"> Date:</label>
-                                <input class="mx-2 w-2/5 border-2 focus:outline-none focus:border-mediumTurqoise" type="date" id="date" required />
+                                <label for="date"> Date:*</label>
+                                <input
+                                    class="mx-2 w-2/5 border-2 focus:border-mediumTurqoise focus:outline-none"
+                                    type="date"
+                                    id="date"
+                                    required
+                                />
                             </li>
                             <li class="container m-3 flex items-center justify-end">
-                                <label for="time"> Time:</label>
-                                <input class="mx-2 w-2/5 border-2 focus:outline-none focus:border-mediumTurqoise" type="time" id="time" required />
+                                <label for="time"> Time:*</label>
+                                <input
+                                    class="mx-2 w-2/5 border-2 focus:border-mediumTurqoise focus:outline-none"
+                                    type="time"
+                                    id="time"
+                                    required
+                                />
                             </li>
                             <li class="container m-3 flex flex-col items-end justify-center text-start">
                                 <label for="description"> Description:</label>
-                                <textarea class="h-24 w-3/4 border-2 focus:outline-none focus:border-mediumTurqoise" id="description"></textarea>
+                                <textarea
+                                    class="h-24 w-3/4 border-2 focus:border-mediumTurqoise focus:outline-none"
+                                    id="description"
+                                ></textarea>
                             </li>
                             <li class="container m-3 flex flex-row items-end justify-end text-start">
                                 <label for="priority">Priority:</label>
-                                <select class="mx-1 bg-cultured focus:outline-none focus:border-mediumTurqoise" name="priority" id="priority">
-                                    <option class="bg-cultured " value="high">High</option>
+                                <select
+                                    class="mx-1 bg-cultured focus:border-mediumTurqoise focus:outline-none"
+                                    name="priority"
+                                    id="priority"
+                                >
+                                    <option class="bg-cultured" value="high">High</option>
                                     <option class="bg-cultured" selected value="medium">Medium</option>
                                     <option class="bg-cultured" value="low">Low</option>
                                 </select>
                             </li>
                             <li class="mt-4 self-center">
-                                <button class="bg-opal p-4 px-12 hover:bg-mediumTurqoise" type="button">Submit</button>
+                                <button id="taskSubmit" class="bg-opal p-4 px-12 hover:bg-mediumTurqoise" type="button">Submit</button>
                             </li>
                         </ul>
                     </form>
