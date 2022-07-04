@@ -21,6 +21,13 @@ document.querySelector("#taskSubmit").onclick = function () {
     }
 };
 
+document.querySelector("#newListButton").onclick = function(){
+    const listContainer = document.querySelector("#toDoContainer")
+     const newList = document.createElement("div")
+     newList.setAttribute("class","w-full bg-cultured rounded-md mb-4 h-24 box-border")
+     listContainer.appendChild(newList)
+}
+
 function closeForm() {
     console.log("closing form");
     const form = document.querySelector("#formContainer");
