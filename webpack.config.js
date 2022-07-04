@@ -36,5 +36,6 @@ plugins: [
     compress:true,
     historyApiFallback: true,
   },
-  mode: 'development'
+  mode: 'development',
+  
 };
