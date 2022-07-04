@@ -4,20 +4,66 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <script src="main.js"></script>
+        <script src="index.js"></script>
         <link rel="stylesheet" href="styles.css" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap" rel="stylesheet" />
         <title>To Do List</title>
-    </head >
+    </head>
     <body>
-        <div class="bg-zinc-200 h-screen grid place-items-center">
+        <div class="grid h-screen place-items-center bg-opal">
             <div class="container h-3/4">
-                <h2 class=" font-Bree_Serif text-start text-5xl ">To Do List</h2>
-                <div class="relative w-full h-full rounded-2xl bg-sky-800"></div>
+                <h2 class="text-start font-Bree_Serif text-5xl">To Do List</h2>
+                <div class="relative h-full w-full rounded-2xl bg-greenBlueCrayola"></div>
             </div>
-            
+            <div id="formContainer" class="z-2 container fixed grid h-full place-items-center overflow-hidden">
+                <div class="h-3/5 w-4/5 rounded-xl bg-cultured shadow-xl lg:w-2/5">
+                    <svg
+                        class="absolute cursor-pointer"
+                        onclick="closeForm()"
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="48"
+                        viewBox="0 0 24 24"
+                        width="48"
+                    >
+                        <path d="M0 0h24v24H0z" fill="none" />
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                    </svg>
+                    <form class="flex h-full flex-col items-center">
+                        <ul class="flex h-full w-1/2 flex-col items-end justify-center">
+                            <h2 class="mb-4 self-center text-center font-Bree_Serif text-2xl">Add Task</h2>
+                            <li class="container m-3 flex items-center justify-end">
+                                <label for="title"> Title:</label>
+                                <input class="mx-2 w-4/5 border-2 border-red-500 focus:border-none" type="text" id="title" required />
+                            </li>
+                            <li class="container m-3 flex items-center justify-end">
+                                <label for="date"> Date:</label>
+                                <input class="mx-2 w-2/5 border-2 border-gray-500" type="date" id="date" required />
+                            </li>
+                            <li class="container m-3 flex items-center justify-end">
+                                <label for="time"> Time:</label>
+                                <input class="mx-2 w-2/5 border-2 border-gray-500" type="time" id="time" required />
+                            </li>
+                            <li class="container m-3 flex flex-col items-end justify-center text-start">
+                                <label for="description"> Description:</label>
+                                <textarea class="h-24 w-3/4 border-2 border-gray-500" id="description"></textarea>
+                            </li>
+                            <li class="container m-3 flex flex-row items-end justify-end text-start">
+                                <label for="priority">Priority:</label>
+                                <select class="mx-1 bg-cultured" name="priority" id="priority">
+                                    <option class="bg-cultured" value="high">High</option>
+                                    <option class="bg-cultured" selected value="medium">Medium</option>
+                                    <option class="bg-cultured" value="low">Low</option>
+                                </select>
+                            </li>
+                            <li class="mt-4 self-center">
+                                <button class="bg-opal p-4 px-12 hover:bg-mediumTurqoise" type="button">Submit</button>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+            </div>
         </div>
     </body>
 </html>
