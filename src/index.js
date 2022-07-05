@@ -16,42 +16,41 @@ document.querySelector("#taskSubmit").onclick = function () {
     } else if (time == "") {
         alert("Time fields are empty");
     } else {
-        pushToArray(title, date, time, description, priority);
-        closeForm()
+        createTask(title, date, time, description, priority);
+        closeForm();
     }
 };
 
-document.querySelector("#newListButton").onclick = function(){
-    const listContainer = document.querySelector("#toDoContainer")
-     const newList = document.createElement("div")
-     newList.setAttribute("class","mb-4 box-border h-24 w-full rounded-md font-Bree_Serif text-center text-5xl pt-5 bg-cultured")
-    const newListValues = document.getElementById("newListInput").value
-    if (newListValues == ""){
-        newList.textContent = "new list"
+document.querySelector("#newListButton").onclick = function () {
+    const listContainer = document.querySelector("#toDoContainer");
+    const newList = document.createElement("div");
+    newList.setAttribute("class", "mb-4 box-border h-24 w-full rounded-md font-Bree_Serif text-center text-5xl pt-5 bg-cultured");
+    const newListValues = document.getElementById("newListInput").value;
+    if (newListValues == "") {
+        newList.textContent = "new list";
     } else {
-        newList.textContent = newListValues
-        document.getElementById("newListInput").value = ''
+        newList.textContent = newListValues;
+        document.getElementById("newListInput").value = "";
     }
-     listContainer.appendChild(newList)
-}
+    listContainer.appendChild(newList);
+};
 
-document.querySelector("#newTaskButton").onclick = function() {
-    openForm()
-}
+document.querySelector("#newTaskButton").onclick = function () {
+    openForm();
+};
 
 function closeForm() {
     console.log("closing form");
     const form = document.querySelector("#formContainer");
     form.classList.add("hidden");
-    form.classList.remove("grid")
+    form.classList.remove("grid");
 }
 
-function openForm(){
+function openForm() {
     console.log("opening form");
     const form = document.querySelector("#formContainer");
     form.classList.remove("hidden");
-    form.classList.add("grid")
-
+    form.classList.add("grid");
 }
 
 let myTasks = [];
@@ -66,16 +65,43 @@ class Task {
     }
 }
 
-const pushToArray = (title, date, time, description, priority) => {
+const createTask = (title, date, time, description, priority) => {
     let task = new Task(title, date, time, description, priority);
     myTasks.push(task);
-    console.table(myTasks);
+
+    const removepreviousTasks = (() => {
+        const allTasks = document.querySelectorAll("#taskContainer");
+        allTasks.forEach((task) => {
+            task.remove();
+        });
+    })();
+
+    myTasks.forEach((task) => {
+        const listContainer = document.querySelector("#listContainer");
+        const taskContainer = document.createElement("div");
+        taskContainer.setAttribute(
+            "class",
+            "m-3 h-52 w-48 overflow-hidden box-border border-[6px] border-greenBlueCrayola shadow-xl rounded-lg bg-opal p-4"
+        );
+        taskContainer.setAttribute("id", "taskContainer");
+        listContainer.appendChild(taskContainer);
+
+        const taskDate = document.createElement("p");
+        taskDate.setAttribute("class", "text-left font-Bree_Serif text-2xl");
+        taskDate.textContent = `${task.date} ${task.time}`;
+        taskContainer.appendChild(taskDate);
+
+        const taskTitle = document.createElement("h1");
+        taskTitle.setAttribute("class", "m-1 text-left font-Bree_Serif text-xl");
+        taskTitle.textContent = task.title;
+        taskContainer.appendChild(taskTitle);
+
+        const taskDescription = document.createElement("p");
+        taskDescription.setAttribute("class", "border-t-8 border-dotted border-cultured text-sm");
+        taskDescription.textContent = task.description;
+        taskContainer.appendChild(taskDescription);
+    });
 };
 
-pushToArray("homeowrk","2026-07-15","15:06","math homework", "medium")
-
-console.table(myTasks[0])
-
-myTasks.forEach(task => 
-document.createElement('div')
-    )
+createTask("homeowrk", "2026-07-15", "15:06", "math homework", "medium");
+createTask("tuition", "2026-07-30", "08:06", "science homework", "medium");
