@@ -24,14 +24,34 @@ document.querySelector("#taskSubmit").onclick = function () {
 document.querySelector("#newListButton").onclick = function(){
     const listContainer = document.querySelector("#toDoContainer")
      const newList = document.createElement("div")
-     newList.setAttribute("class","w-full bg-cultured rounded-md mb-4 h-24 box-border")
+     newList.setAttribute("class","mb-4 box-border h-24 w-full rounded-md font-Bree_Serif text-center text-5xl pt-5 bg-cultured")
+    const newListValues = document.getElementById("newListInput").value
+    if (newListValues == ""){
+        newList.textContent = "new list"
+    } else {
+        newList.textContent = newListValues
+        document.getElementById("newListInput").value = ''
+    }
      listContainer.appendChild(newList)
+}
+
+document.querySelector("#newTaskButton").onclick = function() {
+    openForm()
 }
 
 function closeForm() {
     console.log("closing form");
     const form = document.querySelector("#formContainer");
     form.classList.add("hidden");
+    form.classList.remove("grid")
+}
+
+function openForm(){
+    console.log("opening form");
+    const form = document.querySelector("#formContainer");
+    form.classList.remove("hidden");
+    form.classList.add("grid")
+
 }
 
 let myTasks = [];
@@ -51,3 +71,11 @@ const pushToArray = (title, date, time, description, priority) => {
     myTasks.push(task);
     console.table(myTasks);
 };
+
+pushToArray("homeowrk","2026-07-15","15:06","math homework", "medium")
+
+console.table(myTasks[0])
+
+myTasks.forEach(task => 
+document.createElement('div')
+    )

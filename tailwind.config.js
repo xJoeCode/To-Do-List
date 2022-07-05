@@ -16,7 +16,8 @@ module.exports = {
               greenBlueCrayola: '#2081C3',
               opal: '#BED8D4',
               cultured: '#F7F9F9',
-              mediumTurqoise: '#78D5D7'
+              mediumTurqoise: '#78D5D7',
+              vividSkyBlue: '#63D2FF'
             },
         },
     },

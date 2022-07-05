@@ -15,14 +15,38 @@
         <div class="grid h-screen place-items-center bg-opal">
             <div class="container relative h-4/6">
                 <h2 class="absolute left-0 -top-12 text-start font-Bree_Serif text-5xl">To Do List</h2>
-                <div id="toDoContainer" class="container relative flex h-full w-full flex-col p-4 items-center rounded-2xl bg-greenBlueCrayola">
-                    <div class="w-full bg-cultured rounded-md mb-4 h-24 box-border"></div>
-                    <button type="button" id="newListButton" class="z-15 absolute bottom-5 cursor-pointer h-16 w-36 rounded-lg bg-opal font-Bree_Serif shadow-xl">
-                        New List
-                    </button>
+                <div
+                    id="toDoContainer"
+                    class="container relative flex h-full w-full flex-col items-center rounded-2xl bg-greenBlueCrayola p-4"
+                >
+                    <div
+                        class="mb-4 box-border h-24 w-full cursor-pointer rounded-md bg-cultured pt-5 text-center font-Bree_Serif text-5xl"
+                    >
+                        School
+                    </div>
+                    <div class="order-1 flex flex-row items-center">
+                        <ul class="m-2">
+                            <li>
+                                <input class="h-8 w-48 shadow-xl" type="text" id="newListInput" placeholder="list Name" />
+                            </li>
+                        </ul>
+                        <button
+                            type="button"
+                            id="newListButton"
+                            class="m-2 h-16 w-36 cursor-pointer rounded-lg bg-opal font-Bree_Serif shadow-xl"
+                        >
+                            New List
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div id="formContainer" class="z-2 container hidden fixed grid h-full place-items-center overflow-hidden">
+            <div id="listContainer" class="z-2 container fixed flex flex-wrap h-4/5 w-4/5   rounded-xl bg-[#66A9D6] shadow-xl">
+                
+                <button class="order-1 m-3 rounded-lg w-36 h-52 bg-opal p-4 px-12 hover:bg-mediumTurqoise" type="button" id="newTaskButton">
+                    New task
+                </button>
+            </div>
+            <div id="formContainer" class="z-2 container fixed hidden h-full place-items-center overflow-hidden">
                 <div class="h-3/5 w-4/5 overflow-auto rounded-xl bg-cultured shadow-xl lg:w-2/5">
                     <svg
                         class="absolute cursor-pointer"
