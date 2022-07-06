@@ -30,23 +30,7 @@ function openForm() {
     form.classList.add("grid");
 }
 
-const formtoCreateTask = (projectName) => {
-    const title = document.getElementById("title").value;
-    const date = document.getElementById("date").value;
-    const time = document.getElementById("time").value;
-    const description = document.getElementById("description").value;
-    const priority = document.getElementById("priority").value;
-    if (title == "") {
-        alert("Title fields are empty");
-    } else if (date == "") {
-        alert("Date fields are empty");
-    } else if (time == "") {
-        alert("Time fields are empty");
-    } else {
-        createTask(title, date, time, description, priority, projectName);
-        closeForm();
-    }
-};
+
 
 let projects = {};
 
@@ -57,6 +41,8 @@ const getProjectName = (() => {
     };
 })();
 
+
+
 const generateNewProject = (projectName) => {
     if (projectName == "") {
         alert("Inputs are empty, kindly check values and try again");
@@ -65,7 +51,7 @@ const generateNewProject = (projectName) => {
         const newList = document.createElement("div");
         newList.setAttribute(
             "class",
-            "mb-4 box-border cursor-pointer h-24 w-full rounded-md font-Bree_Serif text-center text-5xl pt-5 bg-cultured"
+            "mb-4 box-border cursor-pointer h-24 w-3/4 rounded-md font-Bree_Serif text-center text-5xl pt-5 bg-cultured hover:bg-[#FFC51C] duration-200 ease-in-out"
         );
 
         newList.setAttribute("data-id", `${projectName}`);
@@ -89,6 +75,24 @@ const generateNewProject = (projectName) => {
                 };
             }
         listContainer.appendChild(newList);
+    }
+};
+
+const formtoCreateTask = (projectName) => {
+    const title = document.getElementById("title").value;
+    const date = document.getElementById("date").value;
+    const time = document.getElementById("time").value;
+    const description = document.getElementById("description").value;
+    const priority = document.getElementById("priority").value;
+    if (title == "") {
+        alert("Title fields are empty");
+    } else if (date == "") {
+        alert("Date fields are empty");
+    } else if (time == "") {
+        alert("Time fields are empty");
+    } else {
+        createTask(title, date, time, description, priority, projectName);
+        closeForm();
     }
 };
 
@@ -146,5 +150,8 @@ const generateTasks = (projectName) => {
     });
 };
 
-//createTask("homeowrk", "2026-07-15", "15:06", "math homework", "medium");
-//createTask("tuition", "2026-07-30", "08:06", "science homework", "medium");
+
+
+generateNewProject("Tuition")
+createTask("homeowrk", "2026-07-15", "15:06", "math homework", "medium","Tuition");
+createTask("tuition", "2026-07-30", "08:06", "science homework", "medium","Tuition");
