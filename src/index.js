@@ -3,8 +3,42 @@ import "./styles.css";
 document.querySelector("#closeButton").onclick = function () {
     closeForm();
 };
+document.querySelector("#closeButton2").onclick = function () {
+    closeProjectPage();
+};
 
-const formtoCreateTask = (projectArray) => {
+document.querySelector("#newTaskButton").onclick = function () {
+    openForm();
+};
+
+function closeForm() {
+
+    const form = document.querySelector("#formContainer");
+    form.classList.add("hidden");
+    form.classList.remove("grid");
+}
+
+function closeProjectPage() {
+
+    const form = document.querySelector("#listContainer");
+    form.classList.add("hidden");
+    form.classList.remove("flex");
+}
+function openProjectPage() {
+ 
+    const form = document.querySelector("#listContainer");
+    form.classList.add("flex");
+    form.classList.remove("hidden");
+}
+
+function openForm() {
+ 
+    const form = document.querySelector("#formContainer");
+    form.classList.remove("hidden");
+    form.classList.add("grid");
+}
+
+const formtoCreateTask = (projectName) => {
     const title = document.getElementById("title").value;
     const date = document.getElementById("date").value;
     const time = document.getElementById("time").value;
@@ -17,17 +51,12 @@ const formtoCreateTask = (projectArray) => {
     } else if (time == "") {
         alert("Time fields are empty");
     } else {
-        createTask(title, date, time, description, priority, projectArray);
+        createTask(title, date, time, description, priority, projectName);
         closeForm();
     }
 }
 
-let projects = (name) => {
-    const getName = () => name;
-    const tasks = [];
-
-    return { getName, tasks };
-};
+let projects = {}
 
 document.querySelector("#newListButton").onclick = function () {
     const listContainer = document.querySelector("#toDoContainer");
@@ -36,71 +65,66 @@ document.querySelector("#newListButton").onclick = function () {
         "class",
         "mb-4 box-border cursor-pointer h-24 w-full rounded-md font-Bree_Serif text-center text-5xl pt-5 bg-cultured"
     );
-    const newListValues = document.getElementById("newListInput").value;
-    newList.setAttribute("data-id", `${newListValues}`);
-    if (newListValues == "") {
+    const projectName = document.getElementById("newListInput").value;
+    newList.setAttribute("data-id", `${projectName}`);
+    if (projectName == "") {
         newList.textContent = "new list";
+        projectName = "new list"
     } else {
-        newList.textContent = newListValues;
+        newList.textContent = projectName;
         document.getElementById("newListInput").value = "";
 
-        let newProject = projects(`${newListValues}`);
-        const projectName = newProject.getName();
-        const projectArray = newProject.tasks
-        console.log(projectArray)
+        //let newProject = projects(`${newListValues}`);
+        //const projectName = newProject.getName();
 
-      //  const openProject = (projectName) => {
-      //      const project = document.querySelector(`[data-id="${projectName}"]`);
-      //      console.log(project);
-     //   };
+        projects[`${projectName}`] = []
+
+        console.log(projects)
 
         newList.onclick = function () {
-         //   openProject(projectName);
-             const listContainer = document.querySelector("#listContainer")
-             listContainer.setAttribute("data-id", `${projectName}`)
-             listContainer.classList.remove("hidden")
-             console.log(open)
-             document.querySelector("#taskSubmit").onclick = function () {formtoCreateTask(projectArray)};
-            
+            openProject(projectName);
+            generateTasks(projectName);
+        };
+
+        const openProject = (projectName) => {
+            //const project = document.querySelector(`[data-id="${projectName}"]`);
+            const listContainer = document.querySelector("#listContainer")
+            const projectHeader = document.querySelector("#listContainerHeader")
+            projectHeader.textContent = projectName
+            listContainer.setAttribute("data-id", `${projectName}`)
+            listContainer.classList.remove("hidden")
+            document.querySelector("#taskSubmit").onclick = function () {formtoCreateTask(projectName)};
         };
     }
     listContainer.appendChild(newList);
 };
 
-document.querySelector("#newTaskButton").onclick = function () {
-    openForm();
-};
-
-function closeForm() {
-    console.log("closing form");
-    const form = document.querySelector("#formContainer");
-    form.classList.add("hidden");
-    form.classList.remove("grid");
-}
-
-function openForm() {
-    console.log("opening form");
-    const form = document.querySelector("#formContainer");
-    form.classList.remove("hidden");
-    form.classList.add("grid");
-}
-
-//let myTasks = [];
 
 class Task {
-    constructor(title, date, time, description, priority, project) {
+    constructor(title, date, time, description, priority ) {
         this.title = title;
         this.date = date;
         this.time = time;
         this.description = description;
         this.priority = priority;
-        this.project = project;
+        
     }
 }
 
-const createTask = (title, date, time, description, priority, projectArray) => {
+const createTask = (title, date, time, description, priority, projectName) => {
     let task = new Task(title, date, time, description, priority);
-    projectArray.push(task);
+
+    projects[`${projectName}`].push(task);
+
+    
+
+    generateTasks(projectName)
+    console.log(projects)
+
+    
+};
+
+const generateTasks = (projectName) =>{
 
     const removepreviousTasks = (() => {
         const allTasks = document.querySelectorAll("#taskContainer");
@@ -108,8 +132,8 @@ const createTask = (title, date, time, description, priority, projectArray) => {
             task.remove();
         });
     })();
-
-    projectArray.forEach((task) => {
+    
+    projects[`${projectName}`].forEach((task) => {
         const listContainer = document.querySelector("#listContainer");
         const taskContainer = document.createElement("div");
         taskContainer.setAttribute(
@@ -134,7 +158,7 @@ const createTask = (title, date, time, description, priority, projectArray) => {
         taskDescription.textContent = task.description;
         taskContainer.appendChild(taskDescription);
     });
-};
+}
 
 //createTask("homeowrk", "2026-07-15", "15:06", "math homework", "medium");
 //createTask("tuition", "2026-07-30", "08:06", "science homework", "medium");
