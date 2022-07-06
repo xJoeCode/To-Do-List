@@ -19,7 +19,8 @@
                     id="toDoContainer"
                     class="container relative flex h-full w-full flex-col items-center rounded-2xl bg-greenBlueCrayola p-4"
                 >
-                    <div data-id="school"
+                    <div
+                        data-id="school"
                         class="mb-4 box-border h-24 w-full cursor-pointer rounded-md bg-cultured pt-5 text-center font-Bree_Serif text-5xl"
                     >
                         School
@@ -40,30 +41,24 @@
                     </div>
                 </div>
             </div>
-            <div id="listContainer" class="z-2 container fixed flex hidden h-4/5 w-4/5 flex-wrap rounded-xl bg-[#66A9D6] shadow-xl">
-                <h1 id="listContainerHeader">adada</h1>
-                <svg
-                        class="absolute right-0 cursor-pointer"
-                        id="closeButton2"
-                        xmlns="http://www.w3.org/2000/svg"
-                        height="48"
-                        viewBox="0 0 24 24"
-                        width="48"
-                    >
-                        <path d="M0 0h24v24H0z" fill="none" />
-                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-                    </svg>
-                <div
-                    id="taskContainer"
-                    class="m-3 box-border h-52 w-48 cursor-pointer overflow-hidden rounded-lg border-[6px] border-greenBlueCrayola bg-opal p-4 shadow-xl hover:bg-mediumTurqoise"
-                >
-                    <p class="text-left font-Bree_Serif text-2xl">2026-07-15 15:06</p>
-                    <h1 class="m-1 text-left font-Bree_Serif text-xl">something else</h1>
-                    <p class="border-t-8 border-dotted border-cultured text-sm">Math Homework</p>
-                </div>
+            <div id="listContainer" class="z-2 container fixed hidden h-4/6  justify-center content-center flex-wrap rounded-xl bg-[#66A9D6] shadow-xl">
+                <h1 class="m-4 w-full h-12 text-center font-Bree_Serif text-4xl uppercase" id="listContainerHeader">adada</h1>
+                
+                
                 <button class="order-1 m-3 h-52 w-36 rounded-lg bg-opal p-4 px-12 hover:bg-mediumTurqoise" type="button" id="newTaskButton">
                     New task
                 </button>
+                <svg
+                    class="absolute right-0 top-0 cursor-pointer"
+                    id="closeButton2"
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="48"
+                    viewBox="0 0 24 24"
+                    width="48"
+                >
+                    <path d="M0 0h24v24H0z" fill="none" />
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                </svg>
             </div>
             <div id="formContainer" class="z-2 container fixed hidden h-full place-items-center overflow-hidden">
                 <div class="h-3/5 w-4/5 overflow-auto rounded-xl bg-cultured shadow-xl lg:w-2/5">
