@@ -3,7 +3,8 @@ import "./styles.css";
 document.querySelector("#closeButton").onclick = function () {
     closeForm();
 };
-document.querySelector("#taskSubmit").onclick = function () {
+
+const formtoCreateTask = (projectArray) => {
     const title = document.getElementById("title").value;
     const date = document.getElementById("date").value;
     const time = document.getElementById("time").value;
@@ -16,21 +17,52 @@ document.querySelector("#taskSubmit").onclick = function () {
     } else if (time == "") {
         alert("Time fields are empty");
     } else {
-        createTask(title, date, time, description, priority);
+        createTask(title, date, time, description, priority, projectArray);
         closeForm();
     }
+}
+
+let projects = (name) => {
+    const getName = () => name;
+    const tasks = [];
+
+    return { getName, tasks };
 };
 
 document.querySelector("#newListButton").onclick = function () {
     const listContainer = document.querySelector("#toDoContainer");
     const newList = document.createElement("div");
-    newList.setAttribute("class", "mb-4 box-border h-24 w-full rounded-md font-Bree_Serif text-center text-5xl pt-5 bg-cultured");
+    newList.setAttribute(
+        "class",
+        "mb-4 box-border cursor-pointer h-24 w-full rounded-md font-Bree_Serif text-center text-5xl pt-5 bg-cultured"
+    );
     const newListValues = document.getElementById("newListInput").value;
+    newList.setAttribute("data-id", `${newListValues}`);
     if (newListValues == "") {
         newList.textContent = "new list";
     } else {
         newList.textContent = newListValues;
         document.getElementById("newListInput").value = "";
+
+        let newProject = projects(`${newListValues}`);
+        const projectName = newProject.getName();
+        const projectArray = newProject.tasks
+        console.log(projectArray)
+
+      //  const openProject = (projectName) => {
+      //      const project = document.querySelector(`[data-id="${projectName}"]`);
+      //      console.log(project);
+     //   };
+
+        newList.onclick = function () {
+         //   openProject(projectName);
+             const listContainer = document.querySelector("#listContainer")
+             listContainer.setAttribute("data-id", `${projectName}`)
+             listContainer.classList.remove("hidden")
+             console.log(open)
+             document.querySelector("#taskSubmit").onclick = function () {formtoCreateTask(projectArray)};
+            
+        };
     }
     listContainer.appendChild(newList);
 };
@@ -53,21 +85,22 @@ function openForm() {
     form.classList.add("grid");
 }
 
-let myTasks = [];
+//let myTasks = [];
 
 class Task {
-    constructor(title, date, time, description, priority) {
+    constructor(title, date, time, description, priority, project) {
         this.title = title;
         this.date = date;
         this.time = time;
         this.description = description;
         this.priority = priority;
+        this.project = project;
     }
 }
 
-const createTask = (title, date, time, description, priority) => {
+const createTask = (title, date, time, description, priority, projectArray) => {
     let task = new Task(title, date, time, description, priority);
-    myTasks.push(task);
+    projectArray.push(task);
 
     const removepreviousTasks = (() => {
         const allTasks = document.querySelectorAll("#taskContainer");
@@ -76,7 +109,7 @@ const createTask = (title, date, time, description, priority) => {
         });
     })();
 
-    myTasks.forEach((task) => {
+    projectArray.forEach((task) => {
         const listContainer = document.querySelector("#listContainer");
         const taskContainer = document.createElement("div");
         taskContainer.setAttribute(
@@ -103,5 +136,5 @@ const createTask = (title, date, time, description, priority) => {
     });
 };
 
-createTask("homeowrk", "2026-07-15", "15:06", "math homework", "medium");
-createTask("tuition", "2026-07-30", "08:06", "science homework", "medium");
+//createTask("homeowrk", "2026-07-15", "15:06", "math homework", "medium");
+//createTask("tuition", "2026-07-30", "08:06", "science homework", "medium");
