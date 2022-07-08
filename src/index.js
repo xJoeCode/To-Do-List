@@ -1,5 +1,5 @@
 import { list } from "postcss";
-import star from "./Assets/star.png"
+import star from "./Assets/star.png";
 import "./styles.css";
 
 document.querySelector("#closeButton").onclick = function () {
@@ -35,7 +35,7 @@ function openForm() {
     form.classList.add("grid");
 }
 
-function openEditForm(){
+function openEditForm() {
     const form = document.querySelector("#editFormContainer");
     form.classList.remove("hidden");
     form.classList.add("grid");
@@ -111,28 +111,27 @@ const formtoCreateTask = (listName) => {
     }
 };
 
-const formtoEditTask = (task,currentList) => {
-    openEditForm()
+const formtoEditTask = (task, listName) => {
+    openEditForm();
 
+    let editTitle = document.getElementById("editTitle");
+    let editDate = document.getElementById("editDate");
+    let editTime = document.getElementById("editTime");
+    let editDescription = document.getElementById("editDescription");
+    let editPriotity = document.getElementById("editPriority");
 
-    
+    editTitle.value = task.title;
+    editDate.value = task.date;
+    editTime.value = task.time;
+    editDescription.value = task.description;
+    editPriotity.value = task.priority;
 
-    let editTitle = document.getElementById("editTitle") 
-    let editDate = document.getElementById("editDate")
-    let editTime = document.getElementById("editTime")
-    let editDescription = document.getElementById("editDescription")
-    let editPriotity = document.getElementById("editPriority")
-
-    editTitle.value = task.title
-    editDate.value = task.date
-    editTime.value = task.time
-    editDescription.value = task.description
-    editPriotity.value = task.priority
-    
-    
-    document.querySelector("#editTaskButton").onclick = function() {editTask(editTitle, editDate, editTime, editDescription, editPriotity, task, currentList);}
-
-    
+    document.querySelector("#editTaskButton").onclick = function () {
+        editTask(editTitle, editDate, editTime, editDescription, editPriotity, task, listName);
+    };
+    document.querySelector("#removeTaskButton").onclick = function () {
+        removeTask(task, listName)
+    }
 };
 
 class Task {
@@ -145,11 +144,10 @@ class Task {
     }
 }
 
-const editTask = (editTitle, editDate, editTime, editDescription, editPriority, task, currentList) =>{
-
-    const taskToBeEdited = currentList.find(taskToBeEdited => taskToBeEdited.title = task.title)
-    const taskindex = currentList.findIndex(number => number === task)
-    console.log(taskindex)
+const editTask = (editTitle, editDate, editTime, editDescription, editPriority, task, listName) => {
+    const taskToBeEdited = lists[`${listName}`].find((taskToBeEdited) => (taskToBeEdited.title = task.title));
+    const taskindex = lists[`${listName}`].findIndex((number) => number === task);
+    console.log(taskindex);
 
     if (editTitle.value == "") {
         alert("Title fields are empty");
@@ -158,47 +156,55 @@ const editTask = (editTitle, editDate, editTime, editDescription, editPriority, 
     } else if (editTime.value == "") {
         alert("Time fields are empty");
     } else {
-   
-    const taskContainer = document.querySelector(`[data-id='${currentList.findIndex(number => number === task)}']`)
-    console.log(taskContainer)
-    const dateTime = taskContainer.querySelector("p:first-of-type")
-    const title = taskContainer.querySelector("h1:first-of-type")
-    const description = taskContainer.querySelector("p:nth-of-type(2)")
-    dateTime.textContent = `${editDate.value} ${editTime.value}`
-    title.textContent = editTitle.value
-    description.textContent = editDescription.value
+        const taskContainer = document.querySelector(`[data-id='${listName + lists[`${listName}`].findIndex((number) => number === task)}']`);
+        console.log(taskContainer);
+        const dateTime = taskContainer.querySelector("p:first-of-type");
+        const title = taskContainer.querySelector("h1:first-of-type");
+        const description = taskContainer.querySelector("p:nth-of-type(2)");
+        dateTime.textContent = `${editDate.value} ${editTime.value}`;
+        title.textContent = editTitle.value;
+        description.textContent = editDescription.value;
 
-    const highPriorityIconContainer = taskContainer.querySelector("#highPriority")
+        const highPriorityIconContainer = taskContainer.querySelector("#highPriority");
 
-    console.log(taskToBeEdited)
-    console.table(lists)
+        console.log(taskToBeEdited);
+        console.table(lists);
 
-    if (editPriority.value == "high" && highPriorityIconContainer == null){
-        console.log("settinghighpriority")
-            const highPriorityIcon = document.createElement("img")
-            highPriorityIcon.src = star
-            highPriorityIcon.setAttribute("class","absolute  top-0 left-0 w-6 m-2 ml-3 h-6")
-            highPriorityIcon.setAttribute("id","highPriority")
+        if (editPriority.value == "high" && highPriorityIconContainer == null) {
+            console.log("settinghighpriority");
+            const highPriorityIcon = document.createElement("img");
+            highPriorityIcon.src = star;
+            highPriorityIcon.setAttribute("class", "absolute  top-0 left-0 w-6 m-2 ml-3 h-6");
+            highPriorityIcon.setAttribute("id", "highPriority");
             taskContainer.appendChild(highPriorityIcon);
-    } else if (editPriority.value == "medium" && highPriorityIconContainer != null ){
-                const highPriorityIcon = taskContainer.querySelector("img")
-                highPriorityIcon.remove()
+        } else if (editPriority.value == "medium" && highPriorityIconContainer != null) {
+            const highPriorityIcon = taskContainer.querySelector("img");
+            highPriorityIcon.remove();
+        }
+
+        taskToBeEdited.title = editTitle.value;
+        taskToBeEdited.date = editDate.value;
+        taskToBeEdited.time = editTime.value;
+        taskToBeEdited.description = editDescription.value;
+        taskToBeEdited.priority = editPriority.value;
+
+        closeEditForm();
     }
+};
 
-    taskToBeEdited.title = editTitle.value
-    taskToBeEdited.date = editDate.value
-    taskToBeEdited.time = editTime.value
-    taskToBeEdited.description = editDescription.value
-    taskToBeEdited.priority = editPriority.value
-
+const removeTask = (task, listName) => {
+    const taskContainer = document.querySelector(`[data-id='${listName + lists[`${listName}`].findIndex((number) => number === task)}']`);
+    taskContainer.remove()
+    let listArray = lists[`${listName}`]
+    console.log( listArray)
+    lists[`${listName}`] = lists[`${listName}`].filter(taskToBeRemoved => taskToBeRemoved != task)
     closeEditForm()
-        console.log(description)
-}
-
 }
 
 const createTask = (title, date, time, description, priority, listName) => {
     let task = new Task(title, date, time, description, priority);
+
+    //task.id = lists[`${listName}`].length
 
     lists[`${listName}`].push(task);
 
@@ -207,7 +213,6 @@ const createTask = (title, date, time, description, priority, listName) => {
 };
 
 const generateTasks = (listName) => {
-
     const removepreviousTasks = (() => {
         const allTasks = document.querySelectorAll("#taskContainer");
         allTasks.forEach((task) => {
@@ -215,40 +220,43 @@ const generateTasks = (listName) => {
         });
     })();
 
-    let currentList = lists[`${listName}`]
+    let currentList = lists[`${listName}`];
 
     currentList.forEach((task) => {
-        console.log(lists)
         const listContainer = document.querySelector("#listContainer");
         const taskContainer = document.createElement("div");
-        if(task.priority == "high") {
-            const highPriorityIcon = document.createElement("img")
-            highPriorityIcon.src = star
-            highPriorityIcon.setAttribute("class","absolute  top-0 left-0 w-6 m-2 ml-3 h-6")
-            highPriorityIcon.setAttribute("id","highPriority")
+        if (task.priority == "high") {
+            const highPriorityIcon = document.createElement("img");
+            highPriorityIcon.src = star;
+            highPriorityIcon.setAttribute("class", "absolute  top-0 left-0 w-6 m-2 ml-3 h-6");
+            highPriorityIcon.setAttribute("id", "highPriority");
             taskContainer.appendChild(highPriorityIcon);
-        } 
-            taskContainer.setAttribute("class", "m-3 pt-8 h-52 w-48 border-[6px] border-greenBlueCrayola relative shadow-xl cursor-pointer rounded-lg bg-opal hover:bg-[#FFE5B8] duration-200 ease-in-out p-4");
-            taskContainer.setAttribute("id", "taskContainer");
-            taskContainer.setAttribute("data-id",`${currentList.findIndex(number => number === task)}`)
-            taskContainer.onclick = function(){formtoEditTask(task,currentList)}
-            listContainer.appendChild(taskContainer);
-    
-            const taskDate = document.createElement("p");
-            taskDate.setAttribute("class", "text-left font-Bree_Serif text-2xl");
-            taskDate.textContent = `${task.date} ${task.time}`;
-            taskContainer.appendChild(taskDate);
-    
-            const taskTitle = document.createElement("h1");
-            taskTitle.setAttribute("class", "m-1 text-left font-Bree_Serif text-xl");
-            taskTitle.textContent = task.title;
-            taskContainer.appendChild(taskTitle);
-    
-            const taskDescription = document.createElement("p");
-            taskDescription.setAttribute("class", "border-t-8 border-dotted border-cultured text-sm");
-            taskDescription.textContent = task.description;
-            taskContainer.appendChild(taskDescription);
-        
+        }
+        taskContainer.setAttribute(
+            "class",
+            "m-3 pt-8 h-52 w-48 border-[6px] border-greenBlueCrayola relative shadow-xl cursor-pointer rounded-lg bg-opal hover:bg-[#FFE5B8] duration-200 ease-in-out p-4"
+        );
+        taskContainer.setAttribute("id", "taskContainer");
+        taskContainer.setAttribute("data-id", `${ listName + currentList.findIndex((number) => number === task)}`);
+        taskContainer.onclick = function () {
+            formtoEditTask(task, listName);
+        };
+        listContainer.appendChild(taskContainer);
+
+        const taskDate = document.createElement("p");
+        taskDate.setAttribute("class", "text-left font-Bree_Serif text-2xl");
+        taskDate.textContent = `${task.date} ${task.time}`;
+        taskContainer.appendChild(taskDate);
+
+        const taskTitle = document.createElement("h1");
+        taskTitle.setAttribute("class", "m-1 text-left font-Bree_Serif text-xl");
+        taskTitle.textContent = task.title;
+        taskContainer.appendChild(taskTitle);
+
+        const taskDescription = document.createElement("p");
+        taskDescription.setAttribute("class", "border-t-8 border-dotted border-cultured text-sm");
+        taskDescription.textContent = task.description;
+        taskContainer.appendChild(taskDescription);
     });
 };
 
