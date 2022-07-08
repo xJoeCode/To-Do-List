@@ -35,6 +35,12 @@ function openForm() {
     form.classList.add("grid");
 }
 
+function openEditForm(){
+    const form = document.querySelector("#editFormContainer");
+    form.classList.remove("hidden");
+    form.classList.add("grid");
+}
+
 function closeEditForm() {
     const form = document.querySelector("#editFormContainer");
     form.classList.remove("grid");
@@ -105,10 +111,11 @@ const formtoCreateTask = (listName) => {
     }
 };
 
-const formtoEditTask = (task,listName) => {
-    const form = document.querySelector("#editFormContainer");
-    form.classList.remove("hidden");
-    form.classList.add("grid");
+const formtoEditTask = (task,currentList) => {
+    openEditForm()
+
+
+    
 
     let editTitle = document.getElementById("editTitle") 
     let editDate = document.getElementById("editDate")
@@ -122,16 +129,10 @@ const formtoEditTask = (task,listName) => {
     editDescription.value = task.description
     editPriotity.value = task.priority
     
-    if (title == "") {
-        alert("Title fields are empty");
-    } else if (date == "") {
-        alert("Date fields are empty");
-    } else if (time == "") {
-        alert("Time fields are empty");
-    } else {
-        document.querySelector("#editTaskButton").onclick = function() {editTask(editTitle, editDate, editTime, editDescription, editPriotity, task, listName);}
-        closeForm();
-    }
+    
+    document.querySelector("#editTaskButton").onclick = function() {editTask(editTitle, editDate, editTime, editDescription, editPriotity, task, currentList);}
+
+    
 };
 
 class Task {
@@ -144,34 +145,55 @@ class Task {
     }
 }
 
-const editTask = (editTitle, editDate, editTime, editDescription, editPriority, task, listName) =>{
-   const taskToBeEdited = lists[`${listName}`].find(taskToBeEdited => taskToBeEdited.title = task.title)
-   const taskContainer = document.querySelector(`[data-key="${task.title}"]`)
-   const dateTime = taskContainer.querySelector("p:first-of-type")
-   const title = taskContainer.querySelector("h1:first-of-type")
-   const description = taskContainer.querySelector("p:nth-of-type(2)")
-   dateTime.textContent = `${editDate.value} ${editTime.value}`
-   title.textContent = editTitle.value
-   description.textContent = editDescription.value
+const editTask = (editTitle, editDate, editTime, editDescription, editPriority, task, currentList) =>{
 
-   const highPriorityIconContainer = taskContainer.querySelector("#highPriority")
-   console.log(editPriority.value)
-   console.log(highPriorityIconContainer)
+    const taskToBeEdited = currentList.find(taskToBeEdited => taskToBeEdited.title = task.title)
+    const taskindex = currentList.findIndex(number => number === task)
+    console.log(taskindex)
 
-   if (editPriority.value == "high" && highPriorityIconContainer == null){
-       console.log("settinghighpriority")
-        const highPriorityIcon = document.createElement("img")
-        highPriorityIcon.src = star
-        highPriorityIcon.setAttribute("class","absolute  top-0 left-0 w-6 m-2 ml-3 h-6")
-        highPriorityIcon.setAttribute("id","highPriority")
-        taskContainer.appendChild(highPriorityIcon);
-   } else if (editPriority.value == "medium" && highPriorityIconContainer != null ){
-             const highPriorityIcon = taskContainer.querySelector("img")
-             highPriorityIcon.remove()
-   }
-   closeEditForm()
-    console.log(description)
-    
+    if (editTitle.value == "") {
+        alert("Title fields are empty");
+    } else if (editDate.value == "") {
+        alert("Date fields are empty");
+    } else if (editTime.value == "") {
+        alert("Time fields are empty");
+    } else {
+   
+    const taskContainer = document.querySelector(`[data-id='${currentList.findIndex(number => number === task)}']`)
+    console.log(taskContainer)
+    const dateTime = taskContainer.querySelector("p:first-of-type")
+    const title = taskContainer.querySelector("h1:first-of-type")
+    const description = taskContainer.querySelector("p:nth-of-type(2)")
+    dateTime.textContent = `${editDate.value} ${editTime.value}`
+    title.textContent = editTitle.value
+    description.textContent = editDescription.value
+
+    const highPriorityIconContainer = taskContainer.querySelector("#highPriority")
+
+    console.log(taskToBeEdited)
+    console.table(lists)
+
+    if (editPriority.value == "high" && highPriorityIconContainer == null){
+        console.log("settinghighpriority")
+            const highPriorityIcon = document.createElement("img")
+            highPriorityIcon.src = star
+            highPriorityIcon.setAttribute("class","absolute  top-0 left-0 w-6 m-2 ml-3 h-6")
+            highPriorityIcon.setAttribute("id","highPriority")
+            taskContainer.appendChild(highPriorityIcon);
+    } else if (editPriority.value == "medium" && highPriorityIconContainer != null ){
+                const highPriorityIcon = taskContainer.querySelector("img")
+                highPriorityIcon.remove()
+    }
+
+    taskToBeEdited.title = editTitle.value
+    taskToBeEdited.date = editDate.value
+    taskToBeEdited.time = editTime.value
+    taskToBeEdited.description = editDescription.value
+    taskToBeEdited.priority = editPriority.value
+
+    closeEditForm()
+        console.log(description)
+}
 
 }
 
@@ -193,7 +215,10 @@ const generateTasks = (listName) => {
         });
     })();
 
-    lists[`${listName}`].forEach((task) => {
+    let currentList = lists[`${listName}`]
+
+    currentList.forEach((task) => {
+        console.log(lists)
         const listContainer = document.querySelector("#listContainer");
         const taskContainer = document.createElement("div");
         if(task.priority == "high") {
@@ -205,8 +230,8 @@ const generateTasks = (listName) => {
         } 
             taskContainer.setAttribute("class", "m-3 pt-8 h-52 w-48 border-[6px] border-greenBlueCrayola relative shadow-xl cursor-pointer rounded-lg bg-opal hover:bg-[#FFE5B8] duration-200 ease-in-out p-4");
             taskContainer.setAttribute("id", "taskContainer");
-            taskContainer.setAttribute("data-key",`${task.title}`)
-            taskContainer.onclick = function(){formtoEditTask(task,listName)}
+            taskContainer.setAttribute("data-id",`${currentList.findIndex(number => number === task)}`)
+            taskContainer.onclick = function(){formtoEditTask(task,currentList)}
             listContainer.appendChild(taskContainer);
     
             const taskDate = document.createElement("p");
