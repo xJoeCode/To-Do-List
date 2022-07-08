@@ -47,7 +47,11 @@
             >
                 <h1 class="m-4 h-12 w-full text-center font-Bree_Serif text-4xl uppercase" id="listContainerHeader">adada</h1>
 
-                <button class="order-1 m-3 h-52 w-36 rounded-lg font-Bree_Serif text-xl bg-opal p-4 px-12 hover:bg-[#FFD660]" type="button" id="newTaskButton">
+                <button
+                    class="order-1 m-3 h-52 w-36 rounded-lg bg-opal p-4 px-12 font-Bree_Serif text-xl hover:bg-[#FFD660]"
+                    type="button"
+                    id="newTaskButton"
+                >
                     New task
                 </button>
                 <svg
@@ -126,6 +130,73 @@
                             </li>
                             <li class="mt-4 self-center">
                                 <button id="taskSubmit" class="bg-opal p-4 px-12 hover:bg-mediumTurqoise" type="button">Submit</button>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+            </div>
+            <div id="editFormContainer" class="z-2 container fixed hidden h-full place-items-center overflow-hidden">
+                <div class="h-3/5 w-4/5 overflow-auto rounded-xl bg-cultured shadow-xl lg:w-2/5">
+                    <svg
+                        class="absolute cursor-pointer"
+                        id="closeButton3"
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="48"
+                        viewBox="0 0 24 24"
+                        width="48"
+                    >
+                        <path d="M0 0h24v24H0z" fill="none" />
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                    </svg>
+                    <form class="flex h-full flex-col items-center">
+                        <ul class="flex h-full w-1/2 flex-col items-end justify-center">
+                            <h2 class="mb-4 self-center text-center font-Bree_Serif text-2xl">Edit Task</h2>
+                            <li class="container m-3 flex items-center justify-end">
+                                <label for="editTitle"> Title:*</label>
+                                <input
+                                    class="mx-2 w-4/5 border-2 focus:border-mediumTurqoise focus:outline-none"
+                                    type="text"
+                                    id="editTitle"
+                                />
+                            </li>
+                            <li class="container m-3 flex items-center justify-end">
+                                <label for="editDate"> Date:*</label>
+                                <input
+                                    class="mx-2 w-2/5 border-2 focus:border-mediumTurqoise focus:outline-none"
+                                    type="date"
+                                    id="editDate"
+                                    required
+                                />
+                            </li>
+                            <li class="container m-3 flex items-center justify-end">
+                                <label for="editTime"> Time:*</label>
+                                <input
+                                    class="mx-2 w-2/5 border-2 focus:border-mediumTurqoise focus:outline-none"
+                                    type="time"
+                                    id="editTime"
+                                    required
+                                />
+                            </li>
+                            <li class="container m-3 flex flex-col items-end justify-center text-start">
+                                <label for="editDescription"> Description:</label>
+                                <textarea
+                                    class="h-24 w-3/4 border-2 focus:border-mediumTurqoise focus:outline-none"
+                                    id="editDescription"
+                                ></textarea>
+                            </li>
+                            <li class="container m-3 flex flex-row items-end justify-end text-start">
+                                <label for="editPriority">Priority:</label>
+                                <select
+                                    class="mx-1 bg-cultured focus:border-mediumTurqoise focus:outline-none"
+                                    name="priority"
+                                    id="editPriority"
+                                >
+                                    <option class="bg-cultured" value="high">High</option>
+                                    <option class="bg-cultured" selected value="medium">Medium</option>
+                                </select>
+                            </li>
+                            <li class="mt-4 self-center">
+                                <button id="editTaskButton" class="bg-opal p-4 px-12 hover:bg-mediumTurqoise" type="button">Submit</button>
                             </li>
                         </ul>
                     </form>
