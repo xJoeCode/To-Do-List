@@ -1,5 +1,5 @@
 //import { list } from "postcss";
-import {format, compareAsc} from 'date-fns'
+import {format, isBefore, parseISO, addDays, compareAsc} from 'date-fns'
 import star from "./Assets/star.png";
 import "./styles.css";
 
@@ -96,21 +96,22 @@ const generateNewList = (listName) => {
 
 const formtoCreateTask = (listName) => {
     const title = document.getElementById("title").value;
-    console.log(document.getElementById("date").value)
-    let date = new Date(`${document.getElementById("date").value} ${document.getElementById("time").value}`) ;
+    let date = new Date(`${document.getElementById("date").value}`) ;
     date = format(date, 'dd-MMM-yyyy, hh:mm bb')
-    console.log(date)
-    //let time2 = new Date(`${document.getElementById("time").value}`)
-    //time2 = format(time, 'HH:mm')
-    //console.log(time2)
-    //const time = document.getElementById("time").value;
-    //console.log(date)
+
+    let formattedDate = format(new Date(`${document.getElementById("date").value}`),'yyyy-MM-dd')
+    let currentDate = format(addDays(new Date(), 1),'yyyy-MM-dd')
+
+    const result = isBefore(parseISO(formattedDate),parseISO(currentDate))
+
     const description = document.getElementById("description").value;
     const priority = document.getElementById("priority").value;
     if (title == "") {
         alert("Title fields are empty");
     } else if (date == "") {
         alert("Date fields are empty");
+    } else if(isBefore(parseISO(formattedDate),parseISO(currentDate))){
+        alert("Please select a date after today")
     } else {
         createTask(title, date, description, priority, listName);
         closeForm();
@@ -128,9 +129,12 @@ const formtoEditTask = (task, listName) => {
 
     console.log(task.date)
     editTitle.value = task.title;
-    task.date = format(new Date(task.date), 'yyyy-MM-dd')
+    task.date = format(new Date(task.date), 'yyyy-MM-dd, HH:mm')
+    //task.time = format(new Date(task.date), 'HH:mm')
+    console.log(task.time)
     editDate.value = task.date;
-    editTime.value = task.time;
+
+    editTime.value = format(new Date(task.date), 'HH:mm')
     editDescription.value = task.description;
     editPriotity.value = task.priority;
 
@@ -150,6 +154,18 @@ class Task {
         this.priority = priority;
     }
 }
+
+
+const createTask = (title, date, description, priority, listName) => {
+    let task = new Task(title, date, description, priority);
+
+    //task.id = lists[`${listName}`].length
+
+    lists[`${listName}`].push(task);
+
+    generateTasks(listName);
+    console.log(lists);
+};
 
 const editTask = (editTitle, editDate, editTime, editDescription, editPriority, task, listName) => {
     const taskToBeEdited = lists[`${listName}`].find((taskToBeEdited) => (taskToBeEdited.title = task.title));
@@ -207,17 +223,6 @@ const removeTask = (task, listName) => {
     lists[`${listName}`] = lists[`${listName}`].filter(taskToBeRemoved => taskToBeRemoved != task)
     closeEditForm()
 }
-
-const createTask = (title, date, description, priority, listName) => {
-    let task = new Task(title, date, description, priority);
-
-    //task.id = lists[`${listName}`].length
-
-    lists[`${listName}`].push(task);
-
-    generateTasks(listName);
-    console.log(lists);
-};
 
 const generateTasks = (listName) => {
     const removepreviousTasks = (() => {
