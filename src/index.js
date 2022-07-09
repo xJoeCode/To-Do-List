@@ -1,4 +1,5 @@
-import { list } from "postcss";
+//import { list } from "postcss";
+import {format, compareAsc} from 'date-fns'
 import star from "./Assets/star.png";
 import "./styles.css";
 
@@ -95,18 +96,23 @@ const generateNewList = (listName) => {
 
 const formtoCreateTask = (listName) => {
     const title = document.getElementById("title").value;
-    const date = document.getElementById("date").value;
-    const time = document.getElementById("time").value;
+    console.log(document.getElementById("date").value)
+    let date = new Date(`${document.getElementById("date").value} ${document.getElementById("time").value}`) ;
+    date = format(date, 'dd-MMM-yyyy, hh:mm bb')
+    console.log(date)
+    //let time2 = new Date(`${document.getElementById("time").value}`)
+    //time2 = format(time, 'HH:mm')
+    //console.log(time2)
+    //const time = document.getElementById("time").value;
+    //console.log(date)
     const description = document.getElementById("description").value;
     const priority = document.getElementById("priority").value;
     if (title == "") {
         alert("Title fields are empty");
     } else if (date == "") {
         alert("Date fields are empty");
-    } else if (time == "") {
-        alert("Time fields are empty");
     } else {
-        createTask(title, date, time, description, priority, listName);
+        createTask(title, date, description, priority, listName);
         closeForm();
     }
 };
@@ -120,7 +126,9 @@ const formtoEditTask = (task, listName) => {
     let editDescription = document.getElementById("editDescription");
     let editPriotity = document.getElementById("editPriority");
 
+    console.log(task.date)
     editTitle.value = task.title;
+    task.date = format(new Date(task.date), 'yyyy-MM-dd')
     editDate.value = task.date;
     editTime.value = task.time;
     editDescription.value = task.description;
@@ -135,10 +143,9 @@ const formtoEditTask = (task, listName) => {
 };
 
 class Task {
-    constructor(title, date, time, description, priority) {
+    constructor(title, date, description, priority) {
         this.title = title;
         this.date = date;
-        this.time = time;
         this.description = description;
         this.priority = priority;
     }
@@ -201,8 +208,8 @@ const removeTask = (task, listName) => {
     closeEditForm()
 }
 
-const createTask = (title, date, time, description, priority, listName) => {
-    let task = new Task(title, date, time, description, priority);
+const createTask = (title, date, description, priority, listName) => {
+    let task = new Task(title, date, description, priority);
 
     //task.id = lists[`${listName}`].length
 
@@ -245,7 +252,7 @@ const generateTasks = (listName) => {
 
         const taskDate = document.createElement("p");
         taskDate.setAttribute("class", "text-left font-Bree_Serif text-2xl");
-        taskDate.textContent = `${task.date} ${task.time}`;
+        taskDate.textContent = `${task.date}`;
         taskContainer.appendChild(taskDate);
 
         const taskTitle = document.createElement("h1");
@@ -261,5 +268,5 @@ const generateTasks = (listName) => {
 };
 
 generateNewList("Tuition");
-createTask("homeowrk", "2026-07-15", "15:06", "math homework", "medium", "Tuition");
-createTask("tuition", "2026-07-30", "08:06", "science homework", "medium", "Tuition");
+createTask("homeowrk", "15-Jul-2023, 03:06 PM", "math homework", "medium", "Tuition");
+createTask("tuition", "30-Jul-2026, 08:06 AM", "science homework", "medium", "Tuition");
