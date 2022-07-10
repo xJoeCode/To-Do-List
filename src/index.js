@@ -1,5 +1,5 @@
 //import { list } from "postcss";
-import { format, isBefore, parseISO, addDays, compareAsc } from "date-fns";
+import { format, isBefore, parseISO, addDays, compareAsc, formatDistance } from "date-fns";
 import star from "./Assets/star.png";
 import "./styles.css";
 
@@ -97,7 +97,7 @@ const generateNewList = (listName) => {
 const formtoCreateTask = (listName) => {
     const title = document.getElementById("title").value;
     let date = new Date(`${document.getElementById("date").value}`);
-    console.log(date)
+    console.log(date);
     date = format(date, "dd-MMM-yyyy, hh:mm bb");
 
     let formattedDate = format(new Date(`${document.getElementById("date").value}`), "yyyy-MM-dd");
@@ -124,16 +124,16 @@ const formtoEditTask = (task, listName) => {
     let editDate = document.getElementById("editDate");
     let editDescription = document.getElementById("editDescription");
     let editPriotity = document.getElementById("editPriority");
-    console.log(lists[`${listName}`])
+    console.log(lists[`${listName}`]);
     editTitle.value = task.title;
-    task.date = format(new Date(task.date),"yyyy-MM-dd'T'HH:mm");
-    
+    task.date = format(new Date(task.date), "yyyy-MM-dd'T'HH:mm");
+
     //task.time = format(new Date(task.date), 'HH:mm')
     editDate.value = task.date;
 
     editDescription.value = task.description;
     editPriotity.value = task.priority;
-    console.log(lists)
+    console.log(lists);
 
     document.querySelector("#editTaskButton").onclick = function () {
         editTask(editTitle, editDate, editDescription, editPriotity, task, listName);
@@ -160,17 +160,15 @@ const createTask = (title, date, description, priority, listName) => {
     lists[`${listName}`].push(task);
 
     generateTasks(listName);
-    
 };
 
 const editTask = (editTitle, editDate, editDescription, editPriority, task, listName) => {
- 
-    const taskToBeEdited = lists[`${listName}`].find((tasksToBeEdited) => (tasksToBeEdited.title === task.title));
-   
-    lists[`${listName}`] = lists[`${listName}`].filter(taskToBeRemoved => taskToBeRemoved !== taskToBeEdited)
-    console.log(lists[`${listName}`])
-    
-   // const taskindex = lists[`${listName}`].findIndex((number) => number === task);
+    const taskToBeEdited = lists[`${listName}`].find((tasksToBeEdited) => tasksToBeEdited.title === task.title);
+
+    lists[`${listName}`] = lists[`${listName}`].filter((taskToBeRemoved) => taskToBeRemoved !== taskToBeEdited);
+    console.log(lists[`${listName}`]);
+
+    // const taskindex = lists[`${listName}`].findIndex((number) => number === task);
 
     const currentDate = format(addDays(new Date(), 1), "yyyy-MM-dd");
     const newFormattedDate = format(new Date(`${editDate.value}`), "yyyy-MM-dd");
@@ -179,54 +177,50 @@ const editTask = (editTitle, editDate, editDescription, editPriority, task, list
         alert("Title fields are empty");
     } else if (editDate.value == "") {
         alert("Date fields are empty");
-    } else if(isBefore(parseISO(newFormattedDate), parseISO(currentDate))){
-        alert("Please select a date after today")
+    } else if (isBefore(parseISO(newFormattedDate), parseISO(currentDate))) {
+        alert("Please select a date after today");
     } else {
+        task.date = format(new Date(`${editDate.value}`), "dd-MMM-yyyy, hh:mm bb");
+        editDate = task.date;
 
-        task.date = format(new Date(`${editDate.value}`),"dd-MMM-yyyy, hh:mm bb");
-        editDate = task.date
+        createTask(editTitle.value, editDate, editDescription.value, editPriority.value, listName);
 
-        createTask(editTitle.value, editDate, editDescription.value, editPriority.value, listName)
+        //   const taskContainer = document.querySelector(
+        //        `[data-id='${listName + lists[`${listName}`].findIndex((number) => number === task)}']`
+        //    );
+        //   const dateTime = taskContainer.querySelector("p:first-of-type");
+        //   const title = taskContainer.querySelector("h1:first-of-type");
+        //    const description = taskContainer.querySelector("p:nth-of-type(2)");
 
+        //    task.date = format(new Date(`${editDate.value}`),"dd-MMM-yyyy, hh:mm bb");
+        //    dateTime.textContent = task.date;
+        //    title.textContent = editTitle.value;
+        //   description.textContent = editDescription.value;
 
+        //   const highPriorityIconContainer = taskContainer.querySelector("#highPriority");
 
-     //   const taskContainer = document.querySelector(
-    //        `[data-id='${listName + lists[`${listName}`].findIndex((number) => number === task)}']`
-    //    );
-     //   const dateTime = taskContainer.querySelector("p:first-of-type");
-     //   const title = taskContainer.querySelector("h1:first-of-type");
-    //    const description = taskContainer.querySelector("p:nth-of-type(2)");
+        //    console.log(taskToBeEdited);
+        //    console.table(lists);
 
-        
-    //    task.date = format(new Date(`${editDate.value}`),"dd-MMM-yyyy, hh:mm bb");
-    //    dateTime.textContent = task.date;
-    //    title.textContent = editTitle.value;
-     //   description.textContent = editDescription.value;
+        //    if (editPriority.value == "high" && highPriorityIconContainer == null) {
+        //        console.log("settinghighpriority");
+        //        const highPriorityIcon = document.createElement("img");
+        //       highPriorityIcon.src = star;
+        //       highPriorityIcon.setAttribute("class", "absolute  top-0 left-0 w-6 m-2 ml-3 h-6");
+        //       highPriorityIcon.setAttribute("id", "highPriority");
+        //       taskContainer.appendChild(highPriorityIcon);
+        //   } else if (editPriority.value == "medium" && highPriorityIconContainer != null) {
+        //       const highPriorityIcon = taskContainer.querySelector("img");
+        //       highPriorityIcon.remove();
+        //    }
+        //    console.log(lists)
+        //    taskToBeEdited.title = editTitle.value;
+        //   taskToBeEdited.date = task.date;
+        //  taskToBeEdited.description = editDescription.value;
+        //  taskToBeEdited.priority = editPriority.value;
 
-     //   const highPriorityIconContainer = taskContainer.querySelector("#highPriority");
-
-    //    console.log(taskToBeEdited);
-    //    console.table(lists);
-
-    //    if (editPriority.value == "high" && highPriorityIconContainer == null) {
-    //        console.log("settinghighpriority");
-    //        const highPriorityIcon = document.createElement("img");
-     //       highPriorityIcon.src = star;
-     //       highPriorityIcon.setAttribute("class", "absolute  top-0 left-0 w-6 m-2 ml-3 h-6");
-     //       highPriorityIcon.setAttribute("id", "highPriority");
-     //       taskContainer.appendChild(highPriorityIcon);
-     //   } else if (editPriority.value == "medium" && highPriorityIconContainer != null) {
-     //       const highPriorityIcon = taskContainer.querySelector("img");
-     //       highPriorityIcon.remove();
-    //    }
-    //    console.log(lists)
-    //    taskToBeEdited.title = editTitle.value;
-     //   taskToBeEdited.date = task.date;
-      //  taskToBeEdited.description = editDescription.value;
-      //  taskToBeEdited.priority = editPriority.value;
-
-    //    console.log(lists)
-    //    console.log(taskToBeEdited)
+        //    console.log(lists)
+        //    console.log(taskToBeEdited)
 
         closeEditForm();
     }
@@ -257,13 +251,13 @@ const generateTasks = (listName) => {
         if (task.priority == "high") {
             const highPriorityIcon = document.createElement("img");
             highPriorityIcon.src = star;
-            highPriorityIcon.setAttribute("class", "absolute  top-0 left-0 w-6 m-2 ml-3 h-6");
+            highPriorityIcon.setAttribute("class", "absolute  -bottom-11 drop-shadow-xl -right-3 w-16 m-2 ml-3 h-16");
             highPriorityIcon.setAttribute("id", "highPriority");
             taskContainer.appendChild(highPriorityIcon);
         }
         taskContainer.setAttribute(
             "class",
-            "m-3 pt-8 h-52 w-48 border-[6px] border-greenBlueCrayola relative shadow-xl cursor-pointer rounded-lg bg-opal hover:bg-[#FFE5B8] duration-200 ease-in-out p-4"
+            "m-3 pt-8 h-52 w-48 border-[6px] border-greenBlueCrayola relative drop-shadow-xl cursor-pointer rounded-lg bg-opal hover:bg-[#FFE5B8] duration-200 ease-in-out p-4"
         );
         taskContainer.setAttribute("id", "taskContainer");
         taskContainer.setAttribute("data-id", `${listName + currentList.findIndex((number) => number === task)}`);
@@ -271,6 +265,15 @@ const generateTasks = (listName) => {
             formtoEditTask(task, listName);
         };
         listContainer.appendChild(taskContainer);
+
+        const currentDate = format(new Date(), "yyyy-MM-dd'T'HH:mm");
+        const newFormattedDate = format(new Date(`${task.date}`), "yyyy-MM-dd'T'HH:mm");
+        const dateDiff = formatDistance(parseISO(currentDate), parseISO(newFormattedDate));
+
+        const dateDiffElement = document.createElement("div");
+        dateDiffElement.textContent = `In ${dateDiff}`;
+        dateDiffElement.setAttribute("class", "text-left font-Bree_Serif text-l p-1 absolute drop-shadow-xl -bottom-6 bg-[#F7B2BA]");
+        taskContainer.appendChild(dateDiffElement);
 
         const taskDate = document.createElement("p");
         taskDate.setAttribute("class", "text-left font-Bree_Serif text-2xl");
@@ -290,5 +293,5 @@ const generateTasks = (listName) => {
 };
 
 generateNewList("Tuition");
-createTask("homeowrk", format(new Date('2023-6-2, 18:00'), "dd-MMM-yyyy, hh:mm bb"), "math homework", "medium", "Tuition");
-createTask("tuition", format(new Date('2023-7-5, 08:00'), "dd-MMM-yyyy, hh:mm bb"), "science homework", "medium", "Tuition");
+createTask("homework", format(new Date("2023-6-2, 18:00"), "dd-MMM-yyyy, hh:mm bb"), "math homework", "medium", "Tuition");
+createTask("tuition", format(new Date("2023-7-5, 08:00"), "dd-MMM-yyyy, hh:mm bb"), "science homework", "medium", "Tuition");
