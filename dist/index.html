@@ -45,8 +45,8 @@
                 id="listContainer"
                 class="z-2 container fixed hidden h-4/6 flex-wrap content-center justify-center rounded-xl bg-[#66A9D6] shadow-xl"
             >
-                <h1 class="m-4 h-12 w-full text-center font-Bree_Serif text-4xl uppercase" id="listContainerHeader">adada</h1>
-
+                <h1 class="m-4 h-12 w-full text-center font-Bree_Serif text-4xl order-first uppercase" id="listContainerHeader">adada</h1>
+                
                 <button
                     class="order-1 m-3 h-52 w-36 rounded-lg bg-opal p-4 px-12 font-Bree_Serif text-xl hover:bg-[#FFD660]"
                     type="button"
@@ -54,6 +54,17 @@
                 >
                     New task
                 </button>
+
+                <div class="order-1 w-full grid">
+                    <button
+                    class=" mt-8 h-16 w-1/7 place-self-center text-center rounded-lg bg-opal p-4 px-12 font-Bree_Serif text-xl hover:bg-[#FFD660]"
+                    type="button"
+                    id="sortButton"
+                >
+                    Sort
+                    </button>
+                </div>
+                
                 <svg
                     class="absolute top-0 left-0 cursor-pointer"
                     id="closeButton2"
@@ -177,10 +188,14 @@
                                 </select>
                             </li>
                             <li class="mt-4 self-center">
-                                <button id="editTaskButton" class="bg-opal p-4 px-12 hover:bg-mediumTurqoise" type="button">Edit Task</button>
+                                <button id="editTaskButton" class="bg-opal p-4 px-12 hover:bg-mediumTurqoise" type="button">
+                                    Edit Task
+                                </button>
                             </li>
                             <li class="mt-4 self-center">
-                                <button id="removeTaskButton" class="bg-opal p-4 px-12 hover:bg-mediumTurqoise" type="button">Remove Task</button>
+                                <button id="removeTaskButton" class="bg-opal p-4 px-12 hover:bg-mediumTurqoise" type="button">
+                                    Remove Task
+                                </button>
                             </li>
                         </ul>
                     </form>

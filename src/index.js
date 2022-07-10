@@ -1,5 +1,5 @@
 //import { list } from "postcss";
-import { format, isBefore, parseISO, addDays, compareAsc, formatDistance } from "date-fns";
+import { format, isBefore, parseISO, addDays, compareAsc, formatDistance, parse } from "date-fns";
 import star from "./Assets/star.png";
 import "./styles.css";
 
@@ -103,6 +103,9 @@ const formtoCreateTask = (listName) => {
     let formattedDate = format(new Date(`${document.getElementById("date").value}`), "yyyy-MM-dd");
     let currentDate = format(addDays(new Date(), 1), "yyyy-MM-dd");
 
+    let id = lists[`${listName}`].length
+    console.log(id)
+
     const description = document.getElementById("description").value;
     const priority = document.getElementById("priority").value;
     if (title == "") {
@@ -112,7 +115,7 @@ const formtoCreateTask = (listName) => {
     } else if (isBefore(parseISO(formattedDate), parseISO(currentDate))) {
         alert("Please select a date after today");
     } else {
-        createTask(title, date, description, priority, listName);
+        createTask(title, date, description, priority, listName, id);
         closeForm();
     }
 };
@@ -126,10 +129,10 @@ const formtoEditTask = (task, listName) => {
     let editPriotity = document.getElementById("editPriority");
     console.log(lists[`${listName}`]);
     editTitle.value = task.title;
-    task.date = format(new Date(task.date), "yyyy-MM-dd'T'HH:mm");
 
-    //task.time = format(new Date(task.date), 'HH:mm')
-    editDate.value = task.date;
+    //temporary date for form input
+    const tempDate = format(new Date(task.date), "yyyy-MM-dd'T'HH:mm");
+    editDate.value = tempDate;
 
     editDescription.value = task.description;
     editPriotity.value = task.priority;
@@ -144,16 +147,17 @@ const formtoEditTask = (task, listName) => {
 };
 
 class Task {
-    constructor(title, date, description, priority) {
+    constructor(title, date, description, priority, id) {
         this.title = title;
         this.date = date;
         this.description = description;
         this.priority = priority;
+        this.id = id
     }
 }
 
-const createTask = (title, date, description, priority, listName) => {
-    let task = new Task(title, date, description, priority);
+const createTask = (title, date, description, priority, listName, id) => {
+    let task = new Task(title, date, description, priority, id);
 
     //task.id = lists[`${listName}`].length
     console.log(lists);
@@ -243,7 +247,35 @@ const generateTasks = (listName) => {
         });
     })();
 
+    const sortButton = document.querySelector("#sortButton")
+    sortButton.onclick = function() {sortTasks(listName)}
+
+    const sortTasks = (listName) =>{
+        const templist = lists[`${listName}`]
+          const sorted = [...templist].sort(function(a, b){
+            const firstDate = format(new Date(`${a.date}`), "yyyy-MM-dd'T'HH:mm")
+            const secondDate = format(new Date(`${b.date}`), "yyyy-MM-dd'T'HH:mm")
+            return compareAsc(parseISO(firstDate), parseISO(secondDate))
+            
+        }) 
+        console.log(sorted)
+        for(let i = 0; i <sorted.length; ++i){
+            const task = document.querySelector(`[data-id="${listName + sorted[i].id}"`)
+            console.log(task)
+            task.setAttribute("style",`order:${i- sorted.length}`)
+       }
+
+        console.log(sorted)
+        console.log(lists[`${listName}`])
+
+        
+    }
+
+
+
     let currentList = lists[`${listName}`];
+
+    console.log(currentList)
 
     currentList.forEach((task) => {
         const listContainer = document.querySelector("#listContainer");
@@ -290,8 +322,9 @@ const generateTasks = (listName) => {
         taskDescription.textContent = task.description;
         taskContainer.appendChild(taskDescription);
     });
+    
 };
 
 generateNewList("Tuition");
-createTask("homework", format(new Date("2023-6-2, 18:00"), "dd-MMM-yyyy, hh:mm bb"), "math homework", "medium", "Tuition");
-createTask("tuition", format(new Date("2023-7-5, 08:00"), "dd-MMM-yyyy, hh:mm bb"), "science homework", "medium", "Tuition");
+createTask("homework", format(new Date("2023-6-2, 18:00"), "dd-MMM-yyyy, hh:mm bb"), "math homework", "medium", "Tuition",0);
+createTask("tuition", format(new Date("2023-7-5, 08:00"), "dd-MMM-yyyy, hh:mm bb"), "science homework", "medium", "Tuition",1);
