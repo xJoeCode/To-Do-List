@@ -23,11 +23,11 @@ function closeForm() {
 function closeListPage() {
     const form = document.querySelector("#listContainer");
     form.classList.add("hidden");
-    form.classList.remove("flex");
+    form.classList.remove("grid");
 }
 function openListPage() {
     const form = document.querySelector("#listContainer");
-    form.classList.add("flex");
+    form.classList.add("grid");
     form.classList.remove("hidden");
 }
 function openForm() {
@@ -65,7 +65,7 @@ const generateNewList = (listName) => {
         const newList = document.createElement("div");
         newList.setAttribute(
             "class",
-            "mb-4 box-border cursor-pointer h-24 w-3/4 rounded-md font-Bree_Serif text-center text-5xl pt-5 bg-cultured hover:bg-[#FFC51C] duration-200 ease-in-out"
+            "mb-4 box-border h-12 w-3/4 cursor-pointer rounded-md bg-cultured pt-2 text-center font-Bree_Serif text-2xl duration-200 ease-in-out hover:bg-[#FFC51C] md:h-24 md:pt-6 md:text-5xl"
         );
 
         newList.setAttribute("data-id", `${listName}`);
@@ -164,10 +164,8 @@ class Task {
 const createTask = (title, date, description, priority, listName, id) => {
     let task = new Task(title, date, description, priority, id);
 
-    //task.id = lists[`${listName}`].length
     console.log(lists);
     lists[`${listName}`].push(task);
-    //lists["All Tasks"].push(task);
 
     generateTasks(listName);
 };
@@ -253,12 +251,11 @@ const generateTasks = (listName) => {
         });
     })();
 
-    if (listName == "All Tasks"){
-        document.querySelector("#newTaskButton").classList.add("hidden")
+    if (listName == "All Tasks") {
+        document.querySelector("#newTaskButton").classList.add("hidden");
     } else {
-        document.querySelector("#newTaskButton").classList.remove("hidden")
+        document.querySelector("#newTaskButton").classList.remove("hidden");
     }
-
 
     const sortButton = document.querySelector("#sortButton");
     if (sortButton.textContent != "Sort By Priority") {
@@ -304,9 +301,8 @@ const generateTasks = (listName) => {
     console.log(currentList);
 
     currentList.forEach((task) => {
-        const listContainer = document.querySelector("#listContainer");
+        const listContainer = document.querySelector("#listHolder");
         const taskContainer = document.createElement("div");
-
 
         if (task.priority == "high") {
             const highPriorityIcon = document.createElement("img");
@@ -322,15 +318,14 @@ const generateTasks = (listName) => {
         }
         taskContainer.setAttribute(
             "class",
-            "m-3 pt-8 h-52 w-48 border-[6px] border-greenBlueCrayola relative drop-shadow-xl cursor-pointer rounded-lg bg-opal hover:bg-[#FFE5B8] duration-200 ease-in-out p-4"
+            "m-4 h-36 md:h-52 w-4/5 md:w-48 border-[6px]  border-greenBlueCrayola relative drop-shadow-xl cursor-pointer rounded-lg bg-opal hover:bg-[#FFE5B8] duration-200 ease-in-out p-4"
         );
         taskContainer.setAttribute("id", "taskContainer");
         taskContainer.setAttribute("data-id", `${listName + currentList.findIndex((number) => number === task)}`);
         taskContainer.onclick = function () {
-            if (listName != "All Tasks"){
+            if (listName != "All Tasks") {
                 formtoEditTask(task, listName);
             }
-            
         };
         listContainer.appendChild(taskContainer);
 
@@ -340,60 +335,61 @@ const generateTasks = (listName) => {
 
         const dateDiffElement = document.createElement("div");
         dateDiffElement.textContent = `In ${dateDiff}`;
-        dateDiffElement.setAttribute("class", "text-left font-Bree_Serif text-l p-1 absolute drop-shadow-xl -bottom-6 bg-[#F7B2BA]");
+        dateDiffElement.setAttribute(
+            "class",
+            "text-left font-Bree_Serif text-base md:text-l p-1 absolute drop-shadow-xl -bottom-6 bg-[#F7B2BA]"
+        );
         taskContainer.appendChild(dateDiffElement);
 
         const taskDate = document.createElement("p");
-        taskDate.setAttribute("class", "text-left font-Bree_Serif text-2xl");
+        taskDate.setAttribute("class", "text-left font-Bree_Serif text-xl md:text-2xl");
         taskDate.textContent = `${task.date}`;
         taskContainer.appendChild(taskDate);
 
         const taskTitle = document.createElement("h1");
-        taskTitle.setAttribute("class", "m-1 text-left font-Bree_Serif text-xl");
+        taskTitle.setAttribute("class", "m-1 text-left font-Bree_Serif text-xl md:text-xl");
         taskTitle.textContent = task.title;
         taskContainer.appendChild(taskTitle);
 
         const taskDescription = document.createElement("p");
-        taskDescription.setAttribute("class", "border-t-8 border-dotted border-cultured text-sm");
+        taskDescription.setAttribute("class", "border-t-8  border-dotted border-cultured text-xs md:text-sm");
         taskDescription.textContent = task.description;
         taskContainer.appendChild(taskDescription);
     });
 };
 
-
 //generateNewList("All Tasks");
-const allTasksButton = document.querySelector("#allTasks")
-allTasksButton.onclick = function() {getAllTasks()}
+const allTasksButton = document.querySelector("#allTasks");
+allTasksButton.onclick = function () {
+    getAllTasks();
+};
 
-Object.defineProperty(lists, 'All Tasks',{
-    enumerable:false,
-    value: []
-})
+Object.defineProperty(lists, "All Tasks", {
+    enumerable: false,
+    value: [],
+});
 
 const getAllTasks = () => {
-    const listContainer = document.querySelector("#listContainer")
+    const listContainer = document.querySelector("#listContainer");
     const listHeader = document.querySelector("#listContainerHeader");
     listHeader.textContent = "All Tasks";
     //listContainer.setAttribute("data-id", `${listName}`);
-    openListPage()
-    const allTasks = document.querySelectorAll("#taskContainer")
-    allTasks.forEach(task => {
-        task.remove()
-     })
+    openListPage();
+    const allTasks = document.querySelectorAll("#taskContainer");
+    allTasks.forEach((task) => {
+        task.remove();
+    });
 
-     //lists["All Tasks"].forEach(task =>  lists["All Tasks"].splice(task))
-     lists["All Tasks"].length = 0
-     
-     for ( const list in lists ){
-        
-        lists[list].forEach(task => lists["All Tasks"].push(task) )
-         console.log(list)
-        generateTasks(list)
-     }
-     generateTasks("All Tasks")
+    //lists["All Tasks"].forEach(task =>  lists["All Tasks"].splice(task))
+    lists["All Tasks"].length = 0;
 
- 
-}
+    for (const list in lists) {
+        lists[list].forEach((task) => lists["All Tasks"].push(task));
+        console.log(list);
+        generateTasks(list);
+    }
+    generateTasks("All Tasks");
+};
 
 generateNewList("Tuition");
 createTask("homework", format(new Date("2023-6-2, 18:00"), "dd-MMM-yyyy, hh:mm bb"), "math homework", "medium", "Tuition", 0);

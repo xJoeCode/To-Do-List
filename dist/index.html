@@ -17,12 +17,12 @@
                 <h2 class="absolute left-0 -top-12 text-start font-Bree_Serif text-5xl">To Do List</h2>
                 <div
                     id="toDoContainer"
-                    class="container relative flex h-full w-full flex-col items-center rounded-2xl bg-greenBlueCrayola p-4"
+                    class="container relative flex h-full justify-center md:justify-start w-full  flex-col items-center rounded-2xl bg-greenBlueCrayola pt-8"
                 >
                     <div
                         id="allTasks"
                         data-id="allTasks"
-                        class="mb-4 box-border h-24 w-3/4 cursor-pointer rounded-md bg-cultured pt-5 text-center font-Bree_Serif text-5xl duration-200 ease-in-out hover:bg-[#FFC51C]"
+                        class="mb-4 box-border h-12 w-3/4 cursor-pointer rounded-md bg-cultured pt-2 text-center font-Bree_Serif text-2xl duration-200 ease-in-out hover:bg-[#FFC51C] md:h-24 md:pt-6 md:text-5xl"
                     >
                         View All Tasks
                     </div>
@@ -35,7 +35,7 @@
                         <button
                             type="button"
                             id="newListButton"
-                            class="m-2 h-16 w-36 cursor-pointer rounded-lg bg-opal font-Bree_Serif shadow-xl"
+                            class="m-2 h-10 md:h-16 w-36 cursor-pointer rounded-lg bg-opal font-Bree_Serif shadow-xl"
                         >
                             New List
                         </button>
@@ -44,17 +44,18 @@
             </div>
             <div
                 id="listContainer"
-                class="z-2 container fixed hidden h-4/6 flex-wrap content-center justify-center rounded-xl bg-[#66A9D6] shadow-xl"
+                class="z-2 grid-row-[1fr,4fr,1fr] container fixed hidden h-full content-center items-center rounded-xl bg-[#66A9D6] shadow-xl md:h-4/6"
             >
                 <h1 class="order-first m-4 h-12 w-full text-center font-Bree_Serif text-4xl uppercase" id="listContainerHeader">adada</h1>
-
-                <button
-                    class="order-1 m-3 h-52 w-36 rounded-lg bg-opal p-4 px-12 font-Bree_Serif text-xl hover:bg-[#FFD660]"
-                    type="button"
-                    id="newTaskButton"
-                >
-                    New task
-                </button>
+                <div class="flex w-full flex-col flex-wrap items-center md:flex-row md:justify-center" id="listHolder">
+                    <button
+                        class="order-1 m-3 h-24 w-4/5 rounded-lg bg-opal p-4 px-12 font-Bree_Serif text-xl hover:bg-[#FFD660] md:h-52 md:w-48"
+                        type="button"
+                        id="newTaskButton"
+                    >
+                        New task
+                    </button>
+                </div>
 
                 <div class="order-1 grid w-full">
                     <button
