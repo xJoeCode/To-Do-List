@@ -96,20 +96,18 @@ const generateNewList = (listName) => {
 
 const formtoCreateTask = (listName) => {
     let title = document.getElementById("title").value;
-    let dateValue = document.getElementById("date").value
+    let dateValue = document.getElementById("date").value;
     console.log(typeof dateValue);
 
     if (dateValue == "") {
         alert("Date fields are empty");
     } else {
-
         let date = new Date(`${dateValue}`);
         date = format(date, "dd-MMM-yyyy, hh:mm bb");
         let formattedDate = format(new Date(`${document.getElementById("date").value}`), "yyyy-MM-dd");
         let currentDate = format(addDays(new Date(), 1), "yyyy-MM-dd");
 
-        let id = lists[`${listName}`].length
-        
+        let id = lists[`${listName}`].length;
 
         const description = document.getElementById("description").value;
         const priority = document.getElementById("priority").value;
@@ -119,8 +117,9 @@ const formtoCreateTask = (listName) => {
             alert("Please select a date after today");
         } else {
             createTask(title, date, description, priority, listName, id);
-            document.getElementById("date").value = ""
-            document.getElementById("title").value = ""
+            document.getElementById("date").value = "";
+            document.getElementById("title").value = "";
+            document.getElementById("description").value = "";
             closeForm();
         }
     }
@@ -158,7 +157,7 @@ class Task {
         this.date = date;
         this.description = description;
         this.priority = priority;
-        this.id = id
+        this.id = id;
     }
 }
 
@@ -253,40 +252,50 @@ const generateTasks = (listName) => {
         });
     })();
 
-    const sortButton = document.querySelector("#sortButton")
-    sortButton.onclick = function() {sortTasks(listName)}
+    const sortButton = document.querySelector("#sortButton");
+    if (sortButton.textContent != "Sort By Priority") {
 
-    const sortTasks = (listName) =>{
-        const templist = lists[`${listName}`]
-          const sorted = [...templist].sort(function(a, b){
-            const firstDate = format(new Date(`${a.date}`), "yyyy-MM-dd'T'HH:mm")
-            const secondDate = format(new Date(`${b.date}`), "yyyy-MM-dd'T'HH:mm")
-            return compareAsc(parseISO(firstDate), parseISO(secondDate))
-            
-        }) 
-        console.log(sorted)
+        console.log("sorting by Date")
+        sortButton.onclick = function () {
+            sortByDate(listName);
+        };
 
+    } else if(sortButton.textContent != "Sort By Date"){
+        console.log("sorting by Priority")
+        sortButton.onclick = function () {
+            sortByPriority(listName);
+        };
+    }
+   
+    const sortByDate = (listName) => {
+        const templist = lists[`${listName}`];
+        const sorted = [...templist].sort(function (a, b) {
+            const firstDate = format(new Date(`${a.date}`), "yyyy-MM-dd'T'HH:mm");
+            const secondDate = format(new Date(`${b.date}`), "yyyy-MM-dd'T'HH:mm");
+            return compareAsc(parseISO(firstDate), parseISO(secondDate));
+        });
         //sortTasks.forEach(sortedTask => lists[`${listName}`].find(task => task == sortedTask)  )
 
-        for(let i = 0; i <sorted.length; ++i){
+        for (let i = 0; i < sorted.length; ++i) {
             //const task = document.querySelector(`[data-id="${listName + sorted[i].id}"`)
-            const taskArray = lists[`${listName}`].find(task => task == sorted[i])
-            taskArray.flexId = i - sorted.length
-            generateTasks(listName)
-         //   task.setAttribute("style",`order:${i- sorted.length}`)
-       }
+            const taskArray = lists[`${listName}`].find((task) => task == sorted[i]);
+            taskArray.flexId = i - sorted.length;
+            sortButton.textContent = "Sort By Priority"
+            generateTasks(listName);
+            //   task.setAttribute("style",`order:${i- sorted.length}`)
+        }
+    };
 
-        console.log(sorted)
-        console.log(lists[`${listName}`])
-
-        
+    const sortByPriority = (listName) =>{
+        const highPriority = lists[`${listName}`].filter(task => task.priority == 'high' )
+        highPriority.forEach(task => task.flexId = -9999)
+        sortButton.textContent = "Sort By Date"
+        generateTasks(listName);
     }
-
-
 
     let currentList = lists[`${listName}`];
 
-    console.log(currentList)
+    console.log(currentList);
 
     currentList.forEach((task) => {
         const listContainer = document.querySelector("#listContainer");
@@ -297,12 +306,12 @@ const generateTasks = (listName) => {
             highPriorityIcon.setAttribute("class", "absolute  -bottom-11 drop-shadow-xl -right-3 w-16 m-2 ml-3 h-16");
             highPriorityIcon.setAttribute("id", "highPriority");
             taskContainer.appendChild(highPriorityIcon);
-        } 
-  
-        if (task.flexId != undefined){
-            console.log("setting flexs")
-            taskContainer.setAttribute("style",`order:${task.flexId}`)
-        } 
+        }
+
+        if (task.flexId != undefined) {
+            console.log("setting flexs");
+            taskContainer.setAttribute("style", `order:${task.flexId}`);
+        }
         taskContainer.setAttribute(
             "class",
             "m-3 pt-8 h-52 w-48 border-[6px] border-greenBlueCrayola relative drop-shadow-xl cursor-pointer rounded-lg bg-opal hover:bg-[#FFE5B8] duration-200 ease-in-out p-4"
@@ -338,9 +347,8 @@ const generateTasks = (listName) => {
         taskDescription.textContent = task.description;
         taskContainer.appendChild(taskDescription);
     });
-    
 };
 
 generateNewList("Tuition");
-createTask("homework", format(new Date("2023-6-2, 18:00"), "dd-MMM-yyyy, hh:mm bb"), "math homework", "medium", "Tuition",0);
-createTask("tuition", format(new Date("2023-7-5, 08:00"), "dd-MMM-yyyy, hh:mm bb"), "science homework", "medium", "Tuition",1);
+createTask("homework", format(new Date("2023-6-2, 18:00"), "dd-MMM-yyyy, hh:mm bb"), "math homework", "medium", "Tuition", 0);
+createTask("tuition", format(new Date("2023-7-5, 08:00"), "dd-MMM-yyyy, hh:mm bb"), "science homework", "medium", "Tuition", 1);
