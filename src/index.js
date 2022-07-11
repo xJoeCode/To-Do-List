@@ -1,5 +1,5 @@
 //import { list } from "postcss";
-import { format, isBefore, parseISO, addDays, compareAsc, formatDistance, parse } from "date-fns";
+import { format, isBefore, isValid, parseISO, addDays, compareAsc, formatDistance, parse } from "date-fns";
 import star from "./Assets/star.png";
 import "./styles.css";
 
@@ -95,28 +95,34 @@ const generateNewList = (listName) => {
 };
 
 const formtoCreateTask = (listName) => {
-    const title = document.getElementById("title").value;
-    let date = new Date(`${document.getElementById("date").value}`);
-    console.log(date);
-    date = format(date, "dd-MMM-yyyy, hh:mm bb");
+    let title = document.getElementById("title").value;
+    let dateValue = document.getElementById("date").value
+    console.log(typeof dateValue);
 
-    let formattedDate = format(new Date(`${document.getElementById("date").value}`), "yyyy-MM-dd");
-    let currentDate = format(addDays(new Date(), 1), "yyyy-MM-dd");
-
-    let id = lists[`${listName}`].length
-    console.log(id)
-
-    const description = document.getElementById("description").value;
-    const priority = document.getElementById("priority").value;
-    if (title == "") {
-        alert("Title fields are empty");
-    } else if (date == "") {
+    if (dateValue == "") {
         alert("Date fields are empty");
-    } else if (isBefore(parseISO(formattedDate), parseISO(currentDate))) {
-        alert("Please select a date after today");
     } else {
-        createTask(title, date, description, priority, listName, id);
-        closeForm();
+
+        let date = new Date(`${dateValue}`);
+        date = format(date, "dd-MMM-yyyy, hh:mm bb");
+        let formattedDate = format(new Date(`${document.getElementById("date").value}`), "yyyy-MM-dd");
+        let currentDate = format(addDays(new Date(), 1), "yyyy-MM-dd");
+
+        let id = lists[`${listName}`].length
+        
+
+        const description = document.getElementById("description").value;
+        const priority = document.getElementById("priority").value;
+        if (title == "") {
+            alert("Title fields are empty");
+        } else if (isBefore(parseISO(formattedDate), parseISO(currentDate))) {
+            alert("Please select a date after today");
+        } else {
+            createTask(title, date, description, priority, listName, id);
+            document.getElementById("date").value = ""
+            document.getElementById("title").value = ""
+            closeForm();
+        }
     }
 };
 
@@ -259,10 +265,15 @@ const generateTasks = (listName) => {
             
         }) 
         console.log(sorted)
+
+        //sortTasks.forEach(sortedTask => lists[`${listName}`].find(task => task == sortedTask)  )
+
         for(let i = 0; i <sorted.length; ++i){
-            const task = document.querySelector(`[data-id="${listName + sorted[i].id}"`)
-            console.log(task)
-            task.setAttribute("style",`order:${i- sorted.length}`)
+            //const task = document.querySelector(`[data-id="${listName + sorted[i].id}"`)
+            const taskArray = lists[`${listName}`].find(task => task == sorted[i])
+            taskArray.flexId = i - sorted.length
+            generateTasks(listName)
+         //   task.setAttribute("style",`order:${i- sorted.length}`)
        }
 
         console.log(sorted)
@@ -286,7 +297,12 @@ const generateTasks = (listName) => {
             highPriorityIcon.setAttribute("class", "absolute  -bottom-11 drop-shadow-xl -right-3 w-16 m-2 ml-3 h-16");
             highPriorityIcon.setAttribute("id", "highPriority");
             taskContainer.appendChild(highPriorityIcon);
-        }
+        } 
+  
+        if (task.flexId != undefined){
+            console.log("setting flexs")
+            taskContainer.setAttribute("style",`order:${task.flexId}`)
+        } 
         taskContainer.setAttribute(
             "class",
             "m-3 pt-8 h-52 w-48 border-[6px] border-greenBlueCrayola relative drop-shadow-xl cursor-pointer rounded-lg bg-opal hover:bg-[#FFE5B8] duration-200 ease-in-out p-4"
