@@ -2,6 +2,10 @@
 
 Live preview: https://xjoecode.github.io/To-Do-List/
 
-made with webpack tailwind and postcss
+made with webpack, tailwind, date-fns and postcss
 
-currently a work in progress
+Features-
+1. Create new To-do List
+2. Add Task
+3. Sort Task
+4. View All Tasks

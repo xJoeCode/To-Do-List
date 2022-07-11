@@ -20,10 +20,11 @@
                     class="container relative flex h-full w-full flex-col items-center rounded-2xl bg-greenBlueCrayola p-4"
                 >
                     <div
-                        data-id="school"
+                        id="allTasks"
+                        data-id="allTasks"
                         class="mb-4 box-border h-24 w-3/4 cursor-pointer rounded-md bg-cultured pt-5 text-center font-Bree_Serif text-5xl duration-200 ease-in-out hover:bg-[#FFC51C]"
                     >
-                        School
+                        View All Tasks
                     </div>
                     <div class="order-1 flex flex-row items-center">
                         <ul class="m-2">
@@ -45,8 +46,8 @@
                 id="listContainer"
                 class="z-2 container fixed hidden h-4/6 flex-wrap content-center justify-center rounded-xl bg-[#66A9D6] shadow-xl"
             >
-                <h1 class="m-4 h-12 w-full text-center font-Bree_Serif text-4xl order-first uppercase" id="listContainerHeader">adada</h1>
-                
+                <h1 class="order-first m-4 h-12 w-full text-center font-Bree_Serif text-4xl uppercase" id="listContainerHeader">adada</h1>
+
                 <button
                     class="order-1 m-3 h-52 w-36 rounded-lg bg-opal p-4 px-12 font-Bree_Serif text-xl hover:bg-[#FFD660]"
                     type="button"
@@ -55,16 +56,16 @@
                     New task
                 </button>
 
-                <div class="order-1 w-full grid">
+                <div class="order-1 grid w-full">
                     <button
-                    class=" mt-8 h-16 w-1/7 place-self-center text-center rounded-lg bg-opal p-4 px-12 font-Bree_Serif text-xl hover:bg-[#FFD660]"
-                    type="button"
-                    id="sortButton"
-                >
-                    Sort by Date
+                        class="w-1/7 mt-8 h-16 place-self-center rounded-lg bg-opal p-4 px-12 text-center font-Bree_Serif text-xl hover:bg-[#FFD660]"
+                        type="button"
+                        id="sortButton"
+                    >
+                        Sort by Date
                     </button>
                 </div>
-                
+
                 <svg
                     class="absolute top-0 left-0 cursor-pointer"
                     id="closeButton2"

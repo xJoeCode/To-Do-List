@@ -6,7 +6,7 @@ plugins: [
     new CopyPlugin({
         patterns: [
         {from: "src/index.html", to: "index.html" },
-        {from: "src/README.md", to: path.resolve(__dirname, 'dist')},
+        //{from: "src/README.md", to: path.resolve(__dirname, 'dist')},
         ],
     }),
     ],

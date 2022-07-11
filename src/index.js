@@ -167,6 +167,7 @@ const createTask = (title, date, description, priority, listName, id) => {
     //task.id = lists[`${listName}`].length
     console.log(lists);
     lists[`${listName}`].push(task);
+    //lists["All Tasks"].push(task);
 
     generateTasks(listName);
 };
@@ -252,21 +253,26 @@ const generateTasks = (listName) => {
         });
     })();
 
+    if (listName == "All Tasks"){
+        document.querySelector("#newTaskButton").classList.add("hidden")
+    } else {
+        document.querySelector("#newTaskButton").classList.remove("hidden")
+    }
+
+
     const sortButton = document.querySelector("#sortButton");
     if (sortButton.textContent != "Sort By Priority") {
-
-        console.log("sorting by Date")
+        console.log("sorting by Date");
         sortButton.onclick = function () {
             sortByDate(listName);
         };
-
-    } else if(sortButton.textContent != "Sort By Date"){
-        console.log("sorting by Priority")
+    } else if (sortButton.textContent != "Sort By Date") {
+        console.log("sorting by Priority");
         sortButton.onclick = function () {
             sortByPriority(listName);
         };
     }
-   
+
     const sortByDate = (listName) => {
         const templist = lists[`${listName}`];
         const sorted = [...templist].sort(function (a, b) {
@@ -280,18 +286,18 @@ const generateTasks = (listName) => {
             //const task = document.querySelector(`[data-id="${listName + sorted[i].id}"`)
             const taskArray = lists[`${listName}`].find((task) => task == sorted[i]);
             taskArray.flexId = i - sorted.length;
-            sortButton.textContent = "Sort By Priority"
+            sortButton.textContent = "Sort By Priority";
             generateTasks(listName);
             //   task.setAttribute("style",`order:${i- sorted.length}`)
         }
     };
 
-    const sortByPriority = (listName) =>{
-        const highPriority = lists[`${listName}`].filter(task => task.priority == 'high' )
-        highPriority.forEach(task => task.flexId = -9999)
-        sortButton.textContent = "Sort By Date"
+    const sortByPriority = (listName) => {
+        const highPriority = lists[`${listName}`].filter((task) => task.priority == "high");
+        highPriority.forEach((task) => (task.flexId = -9999));
+        sortButton.textContent = "Sort By Date";
         generateTasks(listName);
-    }
+    };
 
     let currentList = lists[`${listName}`];
 
@@ -300,6 +306,8 @@ const generateTasks = (listName) => {
     currentList.forEach((task) => {
         const listContainer = document.querySelector("#listContainer");
         const taskContainer = document.createElement("div");
+
+
         if (task.priority == "high") {
             const highPriorityIcon = document.createElement("img");
             highPriorityIcon.src = star;
@@ -319,7 +327,10 @@ const generateTasks = (listName) => {
         taskContainer.setAttribute("id", "taskContainer");
         taskContainer.setAttribute("data-id", `${listName + currentList.findIndex((number) => number === task)}`);
         taskContainer.onclick = function () {
-            formtoEditTask(task, listName);
+            if (listName != "All Tasks"){
+                formtoEditTask(task, listName);
+            }
+            
         };
         listContainer.appendChild(taskContainer);
 
@@ -348,6 +359,41 @@ const generateTasks = (listName) => {
         taskContainer.appendChild(taskDescription);
     });
 };
+
+
+//generateNewList("All Tasks");
+const allTasksButton = document.querySelector("#allTasks")
+allTasksButton.onclick = function() {getAllTasks()}
+
+Object.defineProperty(lists, 'All Tasks',{
+    enumerable:false,
+    value: []
+})
+
+const getAllTasks = () => {
+    const listContainer = document.querySelector("#listContainer")
+    const listHeader = document.querySelector("#listContainerHeader");
+    listHeader.textContent = "All Tasks";
+    //listContainer.setAttribute("data-id", `${listName}`);
+    openListPage()
+    const allTasks = document.querySelectorAll("#taskContainer")
+    allTasks.forEach(task => {
+        task.remove()
+     })
+
+     //lists["All Tasks"].forEach(task =>  lists["All Tasks"].splice(task))
+     lists["All Tasks"].length = 0
+     
+     for ( const list in lists ){
+        
+        lists[list].forEach(task => lists["All Tasks"].push(task) )
+         console.log(list)
+        generateTasks(list)
+     }
+     generateTasks("All Tasks")
+
+ 
+}
 
 generateNewList("Tuition");
 createTask("homework", format(new Date("2023-6-2, 18:00"), "dd-MMM-yyyy, hh:mm bb"), "math homework", "medium", "Tuition", 0);
